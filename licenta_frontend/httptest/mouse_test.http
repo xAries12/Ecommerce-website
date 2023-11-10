@@ -1,0 +1,66 @@
+# GET all products
+GET http://localhost:9090/products/mouses HTTP/1.1
+
+###
+
+# GET a specific product
+GET http://localhost:9090/products/mouses/1 HTTP/1.1
+
+###
+
+# POST a new product
+POST http://localhost:9090/products/mouses
+Content-Type: application/json
+
+{
+  "image": "img1",
+  "stock": 5,
+  "category": "mouse",
+  "price": 100.0,
+  "warranty": 12,
+  "name": "Mouse1",
+  "brand": "logitech",
+  "technology": "BOTH",
+  "mouseInterface": "USB",
+  "sensorType": "ceva",
+  "maximumResolution": 400,
+  "numberButtons": 5,
+  "scrollWheel": 1,
+  "color": "black",
+  "size": "10,5,5",
+  "weight": 50,
+  "supportedOs": "Windows",
+  "other": "other"
+}
+
+###
+
+# PUT (update) an existing product
+PUT http://localhost:9090/products/mouses/8
+Content-Type: application/json
+
+{
+  "image": "img2",
+  "stock": 5,
+  "category": "mouse",
+  "price": 100.0,
+  "warranty": 12,
+  "name": "Mouse1",
+  "brand": "logitech",
+  "technology": "BOTH",
+  "mouseInterface": "USB",
+  "sensorType": "ceva",
+  "maximumResolution": 400,
+  "numberButtons": 5,
+  "scrollWheel": 1,
+  "color": "black",
+  "size": "10,5,5",
+  "weight": 50,
+  "supportedOs": "Windows",
+  "other": "other"
+}
+
+###
+
+# DELETE a product
+DELETE http://localhost:9090/products/mouses/8

@@ -1,0 +1,58 @@
+# GET all products
+GET http://localhost:9090/products/video_cards HTTP/1.1
+
+###
+
+# GET a specific product
+GET http://localhost:9090/products/video_cards/1 HTTP/1.1
+
+###
+
+# POST a new product
+POST http://localhost:9090/products/video_cards
+Content-Type: application/json
+
+{
+  "image": "img1",
+  "stock": 5,
+  "category": "video_card",
+  "price": 100.0,
+  "warranty": 12,
+  "type":"Dedicated",
+  "producer": "Asus2",
+  "family":"nVidia",
+  "model": "GTX 4090",
+  "series": "GTX",
+  "memoryType": "DDR6",
+  "memorySize":8,
+  "busMemory": 2,
+  "other": "other"
+}
+
+###
+
+# PUT (update) an existing product
+PUT http://localhost:9090/products/video_cards/22
+Content-Type: application/json
+
+{
+  "image": "img1",
+  "stock": 5,
+  "category": "video_card",
+  "price": 100.0,
+  "warranty": 12,
+  "type":"Dedicated",
+  "producer": "ROG",
+  "family":"nVidia",
+  "model": "GTX 4090",
+  "series": "GTX",
+  "memoryType": "DDR6",
+  "memorySize":8,
+  "busMemory": 2,
+  "other": "other"
+}
+
+###
+
+# DELETE a product
+DELETE http://localhost:9090/products/video_cards/23

@@ -1,0 +1,56 @@
+# GET all products
+GET http://localhost:9090/products/hard_disks HTTP/1.1
+
+###
+
+# GET a specific product
+GET http://localhost:9090/products/hard_disks/1 HTTP/1.1
+
+###
+
+# POST a new product
+POST http://localhost:9090/products/hard_disks
+Content-Type: application/json
+
+{
+  "image": "img1",
+  "stock": 5,
+  "category": "hard_disk",
+  "price": 100.0,
+  "warranty": 12,
+  "name":"Blue HDD",
+  "series": "CV 2.3",
+  "interfaceType":"M2",
+  "typeHdd": "Intern",
+  "capacity": 500,
+  "buffer": 100,
+  "speed":3900,
+  "other": "other"
+}
+
+###
+
+# PUT (update) an existing product
+PUT http://localhost:9090/products/hard_disks/28
+Content-Type: application/json
+
+{
+  "image": "img2",
+  "stock": 5,
+  "category": "hard_disk",
+  "price": 100.0,
+  "warranty": 12,
+  "name":"Blue HDD",
+  "series": "CV 2.3",
+  "interfaceType":"M2",
+  "typeHdd": "Intern",
+  "capacity": 500,
+  "buffer": 100,
+  "speed":3900,
+  "other": "other"
+}
+
+###
+
+# DELETE a product
+DELETE http://localhost:9090/products/hard_disks/29

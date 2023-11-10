@@ -1,0 +1,29 @@
+<div class="transactions-list">
+  <h2>Transactions:</h2>
+  <ul>
+    <li *ngFor="let transaction of transactions">
+      <div class="transaction">
+        <div class="transaction-info">
+          <span class="transaction-id"><strong>Transaction ID: {{ transaction.idTransaction }}</strong></span><br>
+          <span class="transaction-id"><strong>Date:</strong> {{datepipe.transform(transaction.transactionDate , 'dd-MM-yyyy  hh:mm:ss')}}</span>
+          <span class="transaction-address">{{ transaction.address }}</span>
+          <span class="transaction-stats"><strong>Status:</strong> {{ transaction.status }}</span>
+        </div>
+        <div class="transaction-products">
+          <p><strong>Products:</strong></p>
+          <ul>
+            <li *ngFor="let thp of transaction.transactionHasProducts">
+              <div class="product">
+                <span class="product-name" *ngIf="thp.product" (click)="navigate(thp.product)">Product: {{thp.product.name}}</span>
+                <span class="product-name"><img class="img-product"*ngIf="thp.product" [src]="thp.product.image" alt="Product Image" width="100" style="display: block; margin: 0 auto;"></span>
+                <span class="product-name">Count: {{ thp.count }}</span>
+                <span class="product-name">Price: {{ thp.price }}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <br><span class="transaction-stats">Total price: {{ transaction.totalPrice }}€</span>
+      </div>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,62 @@
+# GET all products
+GET http://localhost:9090/products/ssds HTTP/1.1
+
+###
+
+# GET a specific product
+GET http://localhost:9090/products/ssds/1 HTTP/1.1
+
+###
+
+# POST a new product
+POST http://localhost:9090/products/ssds
+Content-Type: application/json
+
+{
+  "image": "img1",
+  "stock": 5,
+  "category": "ssd",
+  "price": 100.0,
+  "warranty": 12,
+  "name":"Kingston SSD",
+  "typeSsd":"Intern",
+  "series": "CVS 2.3",
+  "formFactor":"formfactor",
+  "interfaceType":"M2",
+  "typeHdd": "Intern",
+  "nvmeSupport": true,
+  "capacity": 500,
+  "maxReading":250,
+  "maxWrite": 200,
+  "other":"other"
+}
+
+###
+
+# PUT (update) an existing product
+PUT http://localhost:9090/products/ssds/32
+Content-Type: application/json
+
+{
+  "image": "img1",
+  "stock": 5,
+  "category": "ssd",
+  "price": 100.0,
+  "warranty": 12,
+  "name":"Kingston SMK SSD",
+  "typeSsd":"Intern",
+  "series": "CVS 2.3",
+  "formFactor":"formfactor",
+  "interfaceType":"M2",
+  "typeHdd": "Intern",
+  "nvmeSupport": true,
+  "capacity": 500,
+  "maxReading":250,
+  "maxWrite": 200,
+  "other":"other"
+}
+
+###
+
+# DELETE a product
+DELETE http://localhost:9090/products/ssds/32

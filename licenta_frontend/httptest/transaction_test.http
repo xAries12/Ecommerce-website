@@ -1,0 +1,24 @@
+
+POST http://localhost:9090/transactions
+Content-Type: application/json
+
+{
+  "idAccount": 9,
+  "idAddress": 5
+}
+
+###
+POST http://localhost:9090/thp
+Content-Type: application/json
+
+{
+  "idProduct": 36,
+  "idTransaction":2,
+  "count":5
+}
+###
+GET http://localhost:9090/transactions/1
+###
+GET http://localhost:9090/transactions/by/9
+###
+GET http://localhost:9090/transactions/chart/day

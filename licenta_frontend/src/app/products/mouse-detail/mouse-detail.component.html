@@ -1,0 +1,209 @@
+<div class="container">
+  <div class="product">
+  <div class="keyboard">
+    <h1>{{mouse?.name}}</h1>
+    <img *ngIf="mouse?.image" class="img-product" [src]="mouse?.image" alt="Mouse Image" width="200">
+  </div>
+  <div class="price">
+    <h2 ng style="color:red">Price:{{mouse?.price}}€</h2><br>
+    <div class="stars" *ngIf="reviews && !isNaN(starsOverAll(reviews))">
+    <p *ngIf="reviews && !isNaN(starsOverAll(reviews))">Reviews({{reviewsLength(reviews)}}):</p>
+      <button *ngFor="let rating of starRatings" [class.filled]="rating <= starsOverAll(reviews)">
+      <mat-icon>{{ rating <= starsOverAll(reviews) ? 'star' : 'star_border' }}</mat-icon>
+      </button>
+  </div>
+    <p *ngIf="reviews && isNaN(starsOverAll(reviews))">No reviews</p>
+    <p *ngIf="mouse && mouse.stock>0">In stock</p>
+    <p *ngIf="mouse && mouse.stock===0">Not in stock</p>
+    <button mat-button class="add-cart-button" (click)="addToCart($event,mouse!.id)" *ngIf="mouse && mouse.stock>0"><mat-icon>add_shopping_cart</mat-icon>Add to cart</button>
+  </div>
+  </div>
+
+  <div class="spec">
+    <h2>Specifications</h2>
+    <p>Brand: {{mouse?.brand}}</p>
+    <p>Technology: {{mouse?.technology}}</p>
+    <p>Color: {{mouse?.color}}</p>
+    <p>Number of Buttons: {{mouse?.numberButtons}}</p>
+    <p>Technology: {{mouse?.technology}}</p>
+    <p>Size: {{mouse?.size}}</p>
+    <p>Weight: {{mouse?.weight}}g</p>
+    <p>Interface: {{mouse?.mouseInterface}}</p>
+    <p>Supported Operating Systems: {{mouse?.supportedOs}}</p>
+    <p>Scroll Wheel: {{mouse?.scrollWheel}}</p>
+    <p>Sensor Type: {{mouse?.sensorType}}</p>
+    <p>Maximum Resolution(DPI): {{mouse?.maximumResolution}}</p>
+    <p *ngIf="mouse?.other!==''">Other: {{mouse?.other}}</p>
+  </div>
+  <h2 *ngIf="reviews">Reviews({{ reviewsLength(mouse!.reviews) || 0 }}):</h2>
+  <div class="review" *ngIf="reviews && !haveReview(reviews) && loginService.isLoggedIn()">
+    <mat-card class="user-review">
+      <mat-card-header>
+        <mat-card-title>Add review:</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+          <textarea class="comment-input" [(ngModel)]="reviewtext" placeholder="Enter your review"></textarea>
+          <div class="stars">
+             <button *ngFor="let rating of starRatings" [class.filled]="rating <= stars" (click)="selectStars(rating)">
+                <mat-icon>{{ rating <= stars ? 'star' : 'star_border' }}</mat-icon>
+            </button>
+          </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button class="add-review-button" (click)="addReview()">Add review</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+<div *ngFor="let review of reviews">
+  <div class="review" *ngIf="review.account.email === loginService.getUsername() && editingReview!==null">
+    <mat-card class="user-review">
+      <mat-card-header>
+        <mat-card-title>Update review:</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+ 	   <textarea class="comment-input" [(ngModel)]="editingReview.content" placeholder="Enter your review"></textarea>
+           <div class="stars">
+             <button *ngFor="let rating of starRatings" [class.filled]="rating <= editingReview.reviewStars" (click)="selectStarsUpdate(rating)">
+                  <mat-icon>{{ rating <= editingReview.reviewStars ? 'star' : 'star_border' }}</mat-icon>
+             </button>
+           </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button class="add-review-button" (click)="updateReview()">Update review</button>
+        <button mat-button class="add-review-button" (click)="closReview()">Close</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <div class="review" *ngIf="review.account.email === loginService.getUsername() && editingReview===null">
+    <mat-card class="user-review">
+      <mat-card-header>
+        <mat-card-title>{{review.account.firstname}} {{review.account.lastname}}</mat-card-title>
+        <mat-card-subtitle>{{datepipe.transform(review.reviewDate, 'dd-MM-yyyy  hh:mm:ss')}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+          <div class="stars">
+            <p>Review:</p>
+            <button *ngFor="let rating of starRatings" [class.filled]="rating <= review.reviewStars">
+              <mat-icon>{{ rating <= review.reviewStars ? 'star' : 'star_border' }}</mat-icon>
+            </button>
+          </div>
+          <p>Text: {{review.reviewMessage}}</p>
+          <p>Coments:{{commentsLength(review.comments)}}</p>
+          <h4 *ngIf="review.checked===false"> This review is waiting for confirmation!</h4>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button class="add-review-button" (click)="editReview(review)">Edit</button>
+        <button mat-button class="add-review-button" (click)="removeReview()">Remove review</button>
+        <button mat-button *ngIf="!statusAddComment(review.idReview) && loginService.isLoggedIn()" class="add-review-button" (click)="openAddComment(review.idReview)">Add comment</button>
+      </mat-card-actions>
+    </mat-card>
+  <div class="comment" *ngFor="let comment of review.comments">
+    <mat-card class="user-comment" *ngIf="!statusUpdateComment(comment.idComment) && comment.checked===true">
+      <mat-card-header>
+        <mat-card-title>{{comment.account.firstname}} {{comment.account.lastname}}</mat-card-title>
+        <mat-card-subtitle>{{datepipe.transform(comment.commentDate , 'dd-MM-yyyy  hh:mm:ss')}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{comment.commentMessage}}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button *ngIf="account.email===comment.account.email"  class="add-review-button" (click)="editUpdate(comment)">Edit coment</button>
+        <button mat-button *ngIf="account.email===comment.account.email"  class="add-review-button" (click)="deleteComment(comment.idComment)">Delete comment</button>
+      </mat-card-actions>
+    </mat-card>
+    <mat-card class="user-comment" *ngIf="statusUpdateComment(comment.idComment) && editingComment!==null">
+      <mat-card-header>
+        <mat-card-title>Edit comment:</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+ 	   <textarea class="comment-input" [(ngModel)]="messageCommentUpdate" placeholder="Enter your review"></textarea>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button *ngIf="account.email===comment.account.email"  class="add-review-button" (click)="updateCommentAndRefresh(comment.idComment)" [disabled]="messageCommentUpdate===''">Edit coment</button>
+        <button mat-button *ngIf="account.email===comment.account.email"  class="add-review-button" (click)="closeUpdateComment(comment.idComment)">Cancel</button>
+      </mat-card-actions>
+    </mat-card>
+
+  </div>
+  <div class="comment">
+  <mat-card class="user-comment" *ngIf="statusAddComment(review.idReview)">
+    <mat-card-header>
+      <mat-card-title>Add Comment:</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <textarea class="comment-input" [(ngModel)]="messageComment" placeholder="Enter your review"></textarea>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button class="add-review-button" (click)="addComment(review.idReview)" [disabled]="messageComment===''">Add comment</button>
+      <button mat-button *ngIf="statusAddComment(review.idReview)" class="add-review-button" (click)="closeAddComment(review.idReview)">Close add comment</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+</div>
+</div>
+<div *ngFor="let review of reviews">
+  <div class="review" *ngIf="review.account.email !== loginService.getUsername() && review.checked===true">
+    <mat-card class="user-review">
+      <mat-card-header>
+        <mat-card-title>{{review.account.firstname}} {{review.account.lastname}}</mat-card-title>
+        <mat-card-subtitle>{{datepipe.transform(review.reviewDate, 'dd-MM-yyyy  hh:mm:ss')}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+          <div class="stars">
+            <p>Review:</p>
+            <button *ngFor="let rating of starRatings" [class.filled]="rating <= review.reviewStars">
+              <mat-icon>{{ rating <= review.reviewStars ? 'star' : 'star_border' }}</mat-icon>
+            </button>
+          </div>
+          <p>Text: {{review.reviewMessage}}</p>
+          <p>Coments:{{commentsLength(review.comments)}}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button *ngIf="!statusAddComment(review.idReview) && loginService.isLoggedIn()" class="add-review-button" (click)="openAddComment(review.idReview)">Add comment</button>
+      </mat-card-actions>
+    </mat-card>
+  <div class="comment" *ngFor="let comment of review.comments">
+    <mat-card class="user-comment" *ngIf="!statusUpdateComment(comment.idComment) && comment.checked===true">
+      <mat-card-header>
+        <mat-card-title>{{comment.account.firstname}} {{comment.account.lastname}}</mat-card-title>
+        <mat-card-subtitle>{{datepipe.transform(comment.commentDate , 'dd-MM-yyyy  hh:mm:ss')}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{comment.commentMessage}}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button *ngIf="account && account.email===comment.account.email"  class="add-review-button" (click)="editUpdate(comment)">Edit coment</button>
+        <button mat-button *ngIf="account && account.email===comment.account.email"  class="add-review-button" (click)="deleteComment(comment.idComment)">Delete comment</button>
+      </mat-card-actions>
+    </mat-card>
+    <mat-card class="user-comment" *ngIf="statusUpdateComment(comment.idComment) && editingComment!==null">
+      <mat-card-header>
+        <mat-card-title>Edit comment:</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+ 	  <textarea class="comment-input" [(ngModel)]="messageCommentUpdate" placeholder="Enter your review"></textarea>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button *ngIf="account.email===comment.account.email"  class="add-review-button" (click)="updateCommentAndRefresh(comment.idComment)" [disabled]="messageCommentUpdate===''">Edit coment</button>
+        <button mat-button *ngIf="account.email===comment.account.email"  class="add-review-button" (click)="closeUpdateComment(comment.idComment)">Cancel</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <div class="comment">
+    <mat-card class="user-comment" *ngIf="statusAddComment(review.idReview)">
+      <mat-card-header>
+        <mat-card-title>Add Comment:</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+          <textarea class="comment-input" [(ngModel)]="messageComment" placeholder="Enter your review"></textarea>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button class="add-review-button" (click)="addComment(review.idReview)" [disabled]="messageComment===''">Add comment</button>
+        <button mat-button *ngIf="statusAddComment(review.idReview)" class="add-review-button" (click)="closeAddComment(review.idReview)">Close add comment</button>
+      </mat-card-actions>
+    </mat-card>
+
+  </div>
+</div>
+</div>
+

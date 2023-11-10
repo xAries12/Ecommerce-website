@@ -1,0 +1,12 @@
+<div>
+  <div class="button-group">
+  <button mat-button (click)="index=1">All time</button>
+  <button mat-button (click)="index=2">Selected time</button>
+  </div>
+</div>
+<div *ngIf="index===1">
+<app-transaction-chart></app-transaction-chart>
+</div>
+<div *ngIf="index===2">
+  <app-transaction-chart-time></app-transaction-chart-time>
+</div>

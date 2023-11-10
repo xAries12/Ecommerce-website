@@ -1,0 +1,110 @@
+<div class="container">
+<div class="container-cart" *ngIf="cartItems.length > 0 && openAddress===false && transsucces===false">
+  <h2>Cart:</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Name:</th>
+        <th>Image</th>
+        <th>Category:</th>
+        <th>Count:</th>
+        <th>Price</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of getFilteredProducts()">
+        <td>{{ product.product.name }}</td>
+        <td><img class="img-product" [src]="product.product.image" alt="Product Image" width="200" style="display: block; margin: 0 auto;"></td>
+        <td>{{product.product.category}}</td>
+        <td><div class="count-buttons">
+          <button (click)="increaseCount(product)"><mat-icon>add</mat-icon></button>
+          <span>{{ product.count }}</span>
+          <button (click)="decreaseCount(product)"><mat-icon>remove</mat-icon></button>
+        </div></td>
+        <td>{{ product.product.price }}€</td>
+        <td>
+        <button (click)="removeItem(product.product.id)"><mat-icon>close</mat-icon></button></td>
+      </tr>
+
+    </tbody>
+  </table>
+  <h2>Total price:{{getTotalPrice()}} €</h2>
+  <button class="buy-button" mat-button *ngIf="loginService.isLoggedIn() && openAddress===false" (click)="openAddress=true">Buy</button>
+  <h3 *ngIf="!loginService.isLoggedIn()">You must be logged in to proceed to the next step.</h3>
+</div>
+<div class="container-cart-next" *ngIf="cartItems.length > 0 && openAddress===true && transsucces===false">
+  <div class="address">
+  <h2>Select address:</h2>
+  <form>
+    <div *ngFor="let address of addresses">
+      <input
+        type="radio"
+        name="selectedAddress"
+        [value]="setAddress(address)"
+        [(ngModel)]="selectedAddressId"
+        id="address_{{ address.idAddress }}"
+      />
+      <label for="address_{{ address.idAddress }}">{{ address.country }}, {{ address.city }}, {{ address.address }}</label>
+    </div>
+  </form>
+  <button class="add-address-button" (click)="toggleAddAddressForm()"><mat-icon>add</mat-icon><p>Address</p></button>
+</div>
+<form *ngIf="showAddAddressForm" (submit)="addAddress()" #addAddressForm="ngForm" class="add-address">
+  <div class="add-address-form">
+  <h3>Add Address</h3>
+  <div class="form-group">
+    <label for="country">Country:</label>
+    <input type="text" id="country" name="country" [(ngModel)]="newAddress!.country"  required>
+  </div>
+  <div class="form-group">
+    <label for="city">City:</label>
+    <input type="text" id="city" name="city" [(ngModel)]="newAddress!.city" required>
+  </div>
+  <div class="form-group">
+    <label for="address">Address:</label>
+    <input type="text" id="address" name="address" [(ngModel)]="newAddress!.address" required>
+  </div>
+  <div class="buttons">
+    <button type="submit" class="button-confirm" [disabled]="addAddressForm.invalid"><h4>Save</h4></button>
+    <button type="button" class="button-cancel" (click)="cancelAddAddress()"><h4>Cancel</h4></button>
+  </div>
+  </div>
+</form>
+<div class="payment">
+  <h2>Select payment method:</h2>
+  <form>
+    <div>
+      <input
+        type="radio"
+        name="selectedPayment"
+        id="payment_pickup"
+        [value]="1"
+        [(ngModel)]="selectedPayment"
+      />
+      <label for="payment_pickup">Cash or card at the personal pick-up point</label>
+    </div>
+    <div>
+      <input
+        type="radio"
+        name="selectedPayment"
+        id="payment_online"
+        [value]="2"
+        [(ngModel)]="selectedPayment"
+      />
+      <label for="payment_online">Online card</label>
+    </div>
+  </form>
+</div>
+<div class="buttons">
+  <button mat-button class="cancel-button" (click)="openAddress=false">Cancel</button>
+  <button mat-button class="buy-button" [disabled]="!selectedAddressId || !selectedPayment" (click)="finishTransaction()">Finish purches</button>
+</div>
+</div>
+<div class="container-empty" *ngIf="cartItems.length === 0">
+  <h2>Cart is empty!</h2>
+</div>
+<div *ngIf="transsucces===true">
+  <h2 style="color:green;">Your transaction has been registered successfully!</h2>
+</div>
+  </div>

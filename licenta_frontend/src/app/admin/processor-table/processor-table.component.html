@@ -1,0 +1,227 @@
+<div class="keyboard-container">
+  <div class="search-container" *ngIf="selectedProcessor===null && !statsAddProcessor">
+    <label class="search-label">Search:</label>
+    <input matInput type="text" [(ngModel)]="filterValue" (input)="applyFilter()" placeholder="Enter ID or Name" class="search-input">
+  </div>
+  <div class="search-container"  *ngIf="selectedProcessor===null && !statsAddProcessor">
+    <label class="search-label">Add new processor</label><button class="button-confirm" (click)="toggleAddProcessorForm()"><mat-icon>add</mat-icon></button>
+  </div>
+
+  <div class="mat-elevation-z8">
+    <table mat-table *ngIf="selectedProcessor===null && !statsAddProcessor" [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.id }}</td>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.name }}</td>
+      </ng-container>
+      <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Image</th>
+        <td mat-cell *matCellDef="let keyboard"><img [src]="keyboard.image" alt="Processor Image" width="100" style="display: block;"></td>
+      </ng-container>
+      <ng-container matColumnDef="stock">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.stock }}</td>
+      </ng-container>
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.price }}</td>
+      </ng-container>
+      <ng-container matColumnDef="warranty">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Warranty</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.warranty }}</td>
+      </ng-container>
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit</th>
+        <td mat-cell *matCellDef="let keyboard">
+          <button mat-icon-button color="primary" (click)="getEditedProcessor(keyboard)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{filterValue}}"</td>
+      </tr>
+    </table>
+
+    <mat-paginator *ngIf="selectedProcessor===null && !statsAddProcessor" style="margin-top: 15px;" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    <div class="keyboard-content">
+      <div class="keyboard-edit" *ngIf="selectedProcessor!==null">
+        <h3>Edit Processor</h3>
+        <ng-container *ngIf="selectedProcessor">
+          <!-- Edit Form -->
+          <form (ngSubmit)="updateProcessor()" #editForm="ngForm">
+            <div>
+              <label class="text-label">ID:</label>
+              <input type="text" name="id" class="input-text" [(ngModel)]="selectedProcessor.id" required readonly [disabled]="true">
+            </div>
+            <div>
+              <label class="text-label">Image URL:</label>
+              <input type="text" name="image" class="input-text" [(ngModel)]="selectedProcessor.image" required>
+            </div>
+            <div>
+              <label class="text-label">Stock:</label>
+              <input type="number" name="stock" class="input-text" [(ngModel)]="selectedProcessor.stock" required>
+            </div>
+            <div>
+              <label class="text-label">Category:</label>
+              <input type="text" name="category" class="input-text" [(ngModel)]="selectedProcessor.category" [disabled]="true" required>
+            </div>
+            <div>
+              <label class="text-label">Price:</label>
+              <input type="number" name="price" class="input-text" [(ngModel)]="selectedProcessor.price" required>
+            </div>
+            <div>
+              <label class="text-label">Warranty:</label>
+              <input type="number" name="warranty" class="input-text" [(ngModel)]="selectedProcessor.warranty" required>
+            </div>
+            <div>
+              <label class="text-label">Name:</label>
+              <input type="text" name="name" class="input-text" [(ngModel)]="selectedProcessor.name" required>
+            </div>
+            <div>
+              <label class="text-label">Producer:</label>
+              <input type="text" name="producer" class="input-text" [(ngModel)]="selectedProcessor.producer" required>
+            </div>
+            <div>
+              <label class="text-label">Model:</label>
+              <input type="text" name="model" class="input-text" [(ngModel)]="selectedProcessor.model" required>
+            </div>
+            <div>
+              <label class="text-label">Socket:</label>
+              <input type="text" name="socket" class="input-text" [(ngModel)]="selectedProcessor.socket" required>
+            </div>
+            <div>
+              <label class="text-label">Core:</label>
+              <input type="text" name="core" class="input-text" [(ngModel)]="selectedProcessor.core" required>
+            </div>
+            <div>
+              <label class="text-label">Series:</label>
+              <input type="text" name="series" class="input-text" [(ngModel)]="selectedProcessor.series" required>
+            </div>
+            <div>
+              <label class="text-label">Number of Cores:</label>
+              <input type="number" name="numberOfCores" class="input-text" [(ngModel)]="selectedProcessor.numberOfCores" required>
+            </div>
+            <div>
+              <label class="text-label">Number of Threads:</label>
+              <input type="number" name="numberOfThreads" class="input-text" [(ngModel)]="selectedProcessor.numberOfThreads" required>
+            </div>
+            <div>
+              <label class="text-label">Frequency:</label>
+              <input type="number" name="frequency" class="input-text" [(ngModel)]="selectedProcessor.frequency" required>
+            </div>
+            <div>
+              <label class="text-label">Frequency(Max):</label>
+              <input type="number" name="frequencyMax" class="input-text" [(ngModel)]="selectedProcessor.frequencyMax" required>
+            </div>
+            <div>
+              <label class="text-label">Cache Memory:</label>
+              <input type="number" name="cache" class="input-text" [(ngModel)]="selectedProcessor.cache" required>
+            </div>
+            <div>
+              <label class="text-label">TDP Max:</label>
+              <input type="number" name="tdpMax" class="input-text" [(ngModel)]="selectedProcessor.tdpMax" required>
+            </div>
+            <div>
+              <label class="text-label">Other:</label>
+              <textarea name="other" [(ngModel)]="selectedProcessor.other"></textarea>
+            </div>
+
+            <button type="submit" [disabled]="editForm.invalid">Update</button>
+            <button type="button" (click)="cancelEdit()">Cancel</button>
+          </form>
+        </ng-container>
+      </div>
+    </div>
+    <div class="keyboard-content">
+      <div class="keyboard-edit" *ngIf="statsAddProcessor">
+        <h3>Add Processor</h3>
+        <ng-container *ngIf="statsAddProcessor">
+          <!-- Edit Form -->
+          <form (ngSubmit)="addProcessor()" #editForm2="ngForm">
+            <div>
+              <label class="text-label">Image:</label>
+              <input type="text" name="image" class="input-text" [(ngModel)]="newProcessor.image" required>
+            </div>
+            <div>
+              <label class="text-label">Stock:</label>
+              <input type="number" name="stock" class="input-text" [(ngModel)]="newProcessor.stock" required>
+            </div>
+            <div>
+              <label class="text-label">Category:</label>
+              <input type="text" name="category" class="input-text" [(ngModel)]="newProcessor.category" [disabled]="true" required>
+            </div>
+            <div>
+              <label class="text-label">Price:</label>
+              <input type="number" name="price" class="input-text" [(ngModel)]="newProcessor.price" required>
+            </div>
+            <div>
+              <label class="text-label">Warranty:</label>
+              <input type="number" name="warranty" class="input-text" [(ngModel)]="newProcessor.warranty" required>
+            </div>
+            <div>
+              <label class="text-label">Name:</label>
+              <input type="text" name="name" class="input-text" [(ngModel)]="newProcessor.name" required>
+            </div>
+            <div>
+              <label class="text-label">Producer:</label>
+              <input type="text" name="producer" class="input-text" [(ngModel)]="newProcessor.producer" required>
+            </div>
+            <div>
+              <label class="text-label">Model:</label>
+              <input type="text" name="model" class="input-text" [(ngModel)]="newProcessor.model" required>
+            </div>
+            <div>
+              <label class="text-label">Socket:</label>
+              <input type="text" name="socket" class="input-text" [(ngModel)]="newProcessor.socket" required>
+            </div>
+            <div>
+              <label class="text-label">Core:</label>
+              <input type="text" name="core" class="input-text" [(ngModel)]="newProcessor.core" required>
+            </div>
+            <div>
+              <label class="text-label">Series:</label>
+              <input type="text" name="series" class="input-text" [(ngModel)]="newProcessor.series" required>
+            </div>
+            <div>
+              <label class="text-label">Number of Cores:</label>
+              <input type="number" name="numberOfCores" class="input-text" [(ngModel)]="newProcessor.numberOfCores" required>
+            </div>
+            <div>
+              <label class="text-label">Number of Threads:</label>
+              <input type="number" name="numberOfThreads" class="input-text" [(ngModel)]="newProcessor.numberOfThreads" required>
+            </div>
+            <div>
+              <label class="text-label">Frequency:</label>
+              <input type="number" name="frequency" class="input-text" [(ngModel)]="newProcessor.frequency" required>
+            </div>
+            <div>
+              <label class="text-label">Frequency(Max):</label>
+              <input type="number" name="frequencyMax" class="input-text" [(ngModel)]="newProcessor.frequencyMax" required>
+            </div>
+            <div>
+              <label class="text-label">Cache Memory:</label>
+              <input type="number" name="cache" class="input-text" [(ngModel)]="newProcessor.cache" required>
+            </div>
+            <div>
+              <label class="text-label">TDP Max:</label>
+              <input type="number" name="tdpMax" class="input-text" [(ngModel)]="newProcessor.tdpMax" required>
+            </div>
+            <div>
+              <label class="text-label">Other:</label>
+              <textarea name="other" [(ngModel)]="newProcessor.other"></textarea>
+            </div>
+            <button type="submit" [disabled]="editForm2.invalid">Add</button>
+            <button type="button" (click)="toggleAddProcessorForm()">Cancel</button>
+          </form>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  </div>

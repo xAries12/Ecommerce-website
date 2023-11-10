@@ -1,0 +1,11 @@
+<div>
+  <div class="button-group">
+    <button mat-button (click)="createChart('day')">Last day</button>
+    <button mat-button (click)="createChart('week')">Last week</button>
+    <button mat-button (click)="createChart('month')">Last month</button>
+    <button mat-button (click)="createChart('year')">Last year</button>
+  </div>
+<div class="chart" *ngIf="exist">
+  <canvasjs-chart  [options]="chartOptions"></canvasjs-chart>
+  </div>
+</div>

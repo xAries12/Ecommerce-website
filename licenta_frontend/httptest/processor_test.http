@@ -1,0 +1,64 @@
+# GET all products
+GET http://localhost:9090/products/processors HTTP/1.1
+
+###
+
+# GET a specific product
+GET http://localhost:9090/products/processors/1 HTTP/1.1
+
+###
+
+# POST a new product
+POST http://localhost:9090/products/processors
+Content-Type: application/json
+
+{
+  "image": "img1",
+  "stock": 5,
+  "category": "processor",
+  "price": 100.0,
+  "warranty": 12,
+  "producer": "Intel",
+  "model": "i9 9400F",
+  "socket": "11407",
+  "core": "core ceva",
+  "series": "i9",
+  "numberOfCores": 8,
+  "numberOfThreads": 6,
+  "frequency": 3000,
+  "frequencyMax":4000,
+  "cache": 16.5,
+  "tdpMax": 1,
+  "other": "other"
+}
+
+###
+
+# PUT (update) an existing product
+PUT http://localhost:9090/products/processors/19
+Content-Type: application/json
+
+{
+  "image": "img1",
+  "stock": 5,
+  "category": "processor",
+  "price": 100.0,
+  "warranty": 12,
+  "producer": "Intel",
+  "model": "i7 9400F",
+  "socket": "11407",
+  "core": "core ceva",
+  "series": "i7",
+  "numberOfCores": 8,
+  "numberOfThreads": 6,
+  "frequency": 3000,
+  "frequencyMax":4000,
+  "cache": 16.5,
+  "tdpMax": 1,
+  "other": "other"
+}
+
+###
+
+# DELETE a product
+DELETE http://localhost:9090/products/processors/20

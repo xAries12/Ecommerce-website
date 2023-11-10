@@ -1,0 +1,71 @@
+# GET all products
+GET http://localhost:9090/products/keyboards HTTP/1.1
+###
+
+
+# GET a specific product
+GET http://localhost:9090/products/keyboards/38 HTTP/1.1
+
+###
+
+# POST a new product
+POST http://localhost:9090/products/keyboards
+Content-Type: application/json
+
+{
+  "image": "img2",
+  "stock": 5,
+  "category": "keyboard",
+  "price": 100.0,
+  "warranty": 12,
+  "reviews": [],
+  "name": "Keyboard1",
+  "brand": "logitech",
+  "type": "WIRE",
+  "color": "black",
+  "numberKeys": 1,
+  "technology": "Nano",
+  "size": "25,15,2",
+  "weight": 120,
+  "keyboardInterface": "USB",
+  "soSystems": "Windows",
+  "palmRest": 0,
+  "characteristics": "caracteristica",
+  "lighting": 1,
+  "layout":"EN",
+  "other":"other"
+}
+
+###
+
+# PUT (update) an existing product
+PUT http://localhost:9090/products/keyboards/40
+Content-Type: application/json
+
+{
+  "image": "keyboardimg.png",
+  "stock": 5,
+  "category": "keyboard",
+  "price": 100.0,
+  "warranty": 12,
+  "name": "TestImg",
+  "brand": "logitech",
+  "type": "WIRE",
+  "color": "black",
+  "numberKeys": true,
+  "technology": "Nano",
+  "size": "25,15,2",
+  "weight": 120,
+  "keyboardInterface": "USB",
+  "soSystems": "Windows",
+  "palmRest": false,
+  "characteristics": "caracteristica",
+  "lighting": true,
+  "layout":"EN",
+  "other":"other"
+}
+
+###
+
+# DELETE a product
+DELETE http://localhost:9090/products/keyboards/11

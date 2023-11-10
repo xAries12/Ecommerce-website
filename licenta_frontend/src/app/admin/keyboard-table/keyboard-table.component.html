@@ -1,0 +1,300 @@
+<div class="keyboard-container">
+<div class="search-container" *ngIf="selectedKeyboard===null && !statsAddKeyboard">
+  <label class="search-label">Search:</label>
+  <input matInput type="text" [(ngModel)]="filterValue" (input)="applyFilter()" placeholder="Enter ID or Name" class="search-input">
+</div>
+<div class="search-container"  *ngIf="selectedKeyboard===null && !statsAddKeyboard">
+  <label class="search-label">Add new keyboard</label><button class="button-confirm" (click)="toggleAddKeyboardForm()"><mat-icon>add</mat-icon></button>
+</div>
+
+<div class="mat-elevation-z8">
+  <table mat-table *ngIf="selectedKeyboard===null && !statsAddKeyboard" [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+      <td mat-cell *matCellDef="let keyboard">{{ keyboard.id }}</td>
+    </ng-container>
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+      <td mat-cell *matCellDef="let keyboard">{{ keyboard.name }}</td>
+    </ng-container>
+    <ng-container matColumnDef="image">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Image</th>
+      <td mat-cell *matCellDef="let keyboard"><img [src]="keyboard.image" alt="Keyboard Image" width="100" style="display: block;"></td>
+    </ng-container>
+    <ng-container matColumnDef="stock">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock</th>
+      <td mat-cell *matCellDef="let keyboard">{{ keyboard.stock }}</td>
+    </ng-container>
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+      <td mat-cell *matCellDef="let keyboard">{{ keyboard.price }}</td>
+    </ng-container>
+    <ng-container matColumnDef="warranty">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Warranty</th>
+      <td mat-cell *matCellDef="let keyboard">{{ keyboard.warranty }}</td>
+    </ng-container>
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit</th>
+      <td mat-cell *matCellDef="let keyboard">
+        <button mat-icon-button color="primary" (click)="getEditedKeyboard(keyboard)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4">No data matching the filter "{{filterValue}}"</td>
+    </tr>
+  </table>
+
+  <mat-paginator *ngIf="selectedKeyboard===null && !statsAddKeyboard" style="margin-top: 15px;" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+  <div class="keyboard-content">
+    <div class="keyboard-edit" *ngIf="selectedKeyboard!==null">
+      <h3>Edit Keyboard</h3>
+      <ng-container *ngIf="selectedKeyboard">
+        <!-- Edit Form -->
+        <form (ngSubmit)="updateKeyboard()" #editForm="ngForm">
+          <div>
+            <label class="text-label">ID:</label>
+            <input type="text" name="id" class="input-text" [(ngModel)]="selectedKeyboard.id" required readonly [disabled]="true">
+          </div>
+          <div>
+            <label class="text-label">Image URL:</label>
+            <input type="text" name="image" class="input-text" [(ngModel)]="selectedKeyboard.image" required>
+          </div>
+          <div>
+            <label class="text-label">Stock:</label>
+            <input type="number" name="stock" class="input-text" [(ngModel)]="selectedKeyboard.stock" required>
+          </div>
+          <div>
+            <label class="text-label">Category:</label>
+            <input type="text" name="category" class="input-text" [(ngModel)]="selectedKeyboard.category" [disabled]="true" required>
+          </div>
+          <div>
+            <label class="text-label">Price:</label>
+            <input type="number" name="price" class="input-text" [(ngModel)]="selectedKeyboard.price" required>
+          </div>
+          <div>
+            <label class="text-label">Warranty:</label>
+            <input type="number" name="warranty" class="input-text" [(ngModel)]="selectedKeyboard.warranty" required>
+          </div>
+          <div>
+            <label class="text-label">Name:</label>
+            <input type="text" name="name" class="input-text" [(ngModel)]="selectedKeyboard.name" required>
+          </div>
+          <div>
+            <label class="text-label">Brand:</label>
+            <input type="text" name="brand" class="input-text" [(ngModel)]="selectedKeyboard.brand" required>
+          </div>
+          <div>
+            <label class="text-label">Type:</label>
+            <select name="type" [(ngModel)]="selectedKeyboard.type" [value]="selectedKeyboard.type" required>
+              <option value="WIRE">WIRE</option>
+              <option value="WIRELESS">WIRELESS</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-label">Color:</label>
+            <input type="text" name="color" class="input-text" [(ngModel)]="selectedKeyboard.color" required>
+          </div>
+          <div>
+            <label class="text-label">Numpad:</label>
+            <div>
+              <label>
+                <input type="radio" name="numberKeys" class="radio-elem"  [(ngModel)]="selectedKeyboard.numberKeys" [value]="true" required> True
+              </label>
+              <label>
+                <input type="radio" name="numberKeys" class="radio-elem" [(ngModel)]="selectedKeyboard.numberKeys" [value]="false" required> False
+              </label>
+            </div>
+          </div>
+          <div>
+            <label class="text-label">Technology:</label>
+            <input type="text" name="technology" class="input-text" [(ngModel)]="selectedKeyboard.technology" required>
+          </div>
+          <div>
+            <label class="text-label">Size:</label>
+            <input type="text" name="size" class="input-text" [(ngModel)]="selectedKeyboard.size" required>
+          </div>
+          <div>
+            <label class="text-label">Weight:</label>
+            <input type="number" name="weight" class="input-text" [(ngModel)]="selectedKeyboard.weight" required>
+          </div>
+          <div>
+            <label class="text-label">Keyboard Interface:</label>
+            <select name="keyboardInterface" [(ngModel)]="selectedKeyboard.keyboardInterface" [value]="selectedKeyboard.keyboardInterface" required>
+              <option value="BLUETOOTH">Bluetooth</option>
+              <option value="USB">USB</option>
+              <option value="BOTH">Both</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-label">Supported Operating Systems:</label>
+            <input type="text" name="soSystems" class="input-text" [(ngModel)]="selectedKeyboard.soSystems" required>
+          </div>
+          <div>
+            <label class="text-label">Palm Rest:</label>
+            <div>
+              <label>
+                <input type="radio" name="palmRest" class="radio-elem" [(ngModel)]="selectedKeyboard.palmRest" [value]="true" required> Yes
+              </label>
+              <label>
+                <input type="radio" name="palmRest" class="radio-elem" [(ngModel)]="selectedKeyboard.palmRest" [value]="false" required> No
+              </label>
+            </div>
+          </div>
+          <div>
+            <label class="text-label">Characteristics:</label>
+            <input type="text" name="characteristics" class="input-text" [(ngModel)]="selectedKeyboard.characteristics" required>
+          </div>
+          <div>
+            <label class="text-label">Lighting:</label>
+            <div>
+              <label>
+                <input type="radio" name="lighting" class="radio-elem" [(ngModel)]="selectedKeyboard.lighting" [value]="true" required> Yes
+              </label>
+              <label>
+                <input type="radio" name="lighting" class="radio-elem" [(ngModel)]="selectedKeyboard.lighting" [value]="false" required> No
+              </label>
+            </div>
+          </div>
+          <div>
+            <label class="text-label">Layout:</label>
+            <input type="text" name="layout" class="input-text" [(ngModel)]="selectedKeyboard.layout" required>
+          </div>
+          <div>
+            <label class="text-label">Other:</label>
+            <textarea name="other" [(ngModel)]="selectedKeyboard.other"></textarea>
+          </div>
+
+          <button type="submit" [disabled]="editForm.invalid">Update</button>
+          <button type="button" (click)="cancelEdit()">Cancel</button>
+        </form>
+      </ng-container>
+    </div>
+  </div>
+  <div class="keyboard-content">
+    <div class="keyboard-edit" *ngIf="statsAddKeyboard">
+      <h3>Add Keyboard</h3>
+      <ng-container *ngIf="statsAddKeyboard">
+        <!-- Edit Form -->
+        <form (ngSubmit)="addKeyboard()" #editForm2="ngForm">
+          <div>
+            <label class="text-label">Image:</label>
+            <input type="text" name="image" class="input-text" [(ngModel)]="newKeyboard.image" required>
+          </div>
+          <div>
+            <label class="text-label">Stock:</label>
+            <input type="number" name="stock" class="input-text" [(ngModel)]="newKeyboard.stock" required>
+          </div>
+          <div>
+            <label class="text-label">Category:</label>
+            <input type="text" name="category" class="input-text" [(ngModel)]="newKeyboard.category" [disabled]="true" required>
+          </div>
+          <div>
+            <label class="text-label">Price:</label>
+            <input type="number" name="price" class="input-text" [(ngModel)]="newKeyboard.price" required>
+          </div>
+          <div>
+            <label class="text-label">Warranty:</label>
+            <input type="number" name="warranty" class="input-text" [(ngModel)]="newKeyboard.warranty" required>
+          </div>
+          <div>
+            <label class="text-label">Name:</label>
+            <input type="text" name="name" class="input-text" [(ngModel)]="newKeyboard.name" required>
+          </div>
+          <div>
+            <label class="text-label">Brand:</label>
+            <input type="text" name="brand" class="input-text" [(ngModel)]="newKeyboard.brand" required>
+          </div>
+          <div>
+            <label class="text-label">Type:</label>
+            <select name="type" [(ngModel)]="newKeyboard.type" [value]="newKeyboard.type" required>
+              <option value="WIRE">WIRE</option>
+              <option value="WIRELESS">WIRELESS</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-label">Color:</label>
+            <input type="text" name="color" class="input-text" [(ngModel)]="newKeyboard.color" required>
+          </div>
+          <div>
+            <label class="text-label">Numpad:</label>
+            <div>
+              <label>
+                <input type="radio" name="numberKeys" class="radio-elem"  [(ngModel)]="newKeyboard.numberKeys" [value]="true" required> True
+              </label>
+              <label>
+                <input type="radio" name="numberKeys" class="radio-elem" [(ngModel)]="newKeyboard.numberKeys" [value]="false" required> False
+              </label>
+            </div>
+          </div>
+          <div>
+            <label class="text-label">Technology:</label>
+            <input type="text" name="technology" class="input-text" [(ngModel)]="newKeyboard.technology" required>
+          </div>
+          <div>
+            <label class="text-label">Size:</label>
+            <input type="text" name="size" class="input-text" [(ngModel)]="newKeyboard.size" required>
+          </div>
+          <div>
+            <label class="text-label">Weight:</label>
+            <input type="number" name="weight" class="input-text" [(ngModel)]="newKeyboard.weight" required>
+          </div>
+          <div>
+            <label class="text-label">Keyboard Interface:</label>
+            <select name="keyboardInterface" [(ngModel)]="newKeyboard.keyboardInterface" [value]="newKeyboard.keyboardInterface" required>
+              <option value="BLUETOOTH">Bluetooth</option>
+              <option value="USB">USB</option>
+              <option value="BOTH">Both</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-label">Supported Operating Systems:</label>
+            <input type="text" name="soSystems" class="input-text" [(ngModel)]="newKeyboard.soSystems" required>
+          </div>
+          <div>
+            <label class="text-label">Palm Rest:</label>
+            <div>
+              <label>
+                <input type="radio" name="palmRest" class="radio-elem" [(ngModel)]="newKeyboard.palmRest" [value]="true" required> Yes
+              </label>
+              <label>
+                <input type="radio" name="palmRest" class="radio-elem" [(ngModel)]="newKeyboard.palmRest" [value]="false" required> No
+              </label>
+            </div>
+          </div>
+          <div>
+            <label class="text-label">Characteristics:</label>
+            <input type="text" name="characteristics" class="input-text" [(ngModel)]="newKeyboard.characteristics" required>
+          </div>
+          <div>
+            <label class="text-label">Lighting:</label>
+            <div>
+              <label>
+                <input type="radio" name="lighting" class="radio-elem" [(ngModel)]="newKeyboard.lighting" [value]="true" required> Yes
+              </label>
+              <label>
+                <input type="radio" name="lighting" class="radio-elem" [(ngModel)]="newKeyboard.lighting" [value]="false" required> No
+              </label>
+            </div>
+          </div>
+          <div>
+            <label class="text-label">Layout:</label>
+            <input type="text" name="layout" class="input-text" [(ngModel)]="newKeyboard.layout" required>
+          </div>
+          <div>
+            <label class="text-label">Other:</label>
+            <textarea name="other" [(ngModel)]="newKeyboard.other"></textarea>
+          </div>
+
+          <button type="submit" [disabled]="editForm2.invalid">Add</button>
+          <button type="button" (click)="toggleAddKeyboardForm()">Cancel</button>
+        </form>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+</div>

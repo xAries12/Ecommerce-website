@@ -1,0 +1,214 @@
+<div class="keyboard-container">
+  <div class="search-container" *ngIf="selectedMotherboard===null && !statsAddMotherboard">
+    <label class="search-label">Search:</label>
+    <input matInput type="text" [(ngModel)]="filterValue" (input)="applyFilter()" placeholder="Enter ID or Name" class="search-input">
+  </div>
+  <div class="search-container"  *ngIf="selectedMotherboard===null && !statsAddMotherboard">
+    <label class="search-label">Add new Motherboard</label><button class="button-confirm" (click)="toggleAddMotherboardForm()"><mat-icon>add</mat-icon></button>
+  </div>
+
+  <div class="mat-elevation-z8">
+    <table mat-table *ngIf="selectedMotherboard===null && !statsAddMotherboard" [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.id }}</td>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.name }}</td>
+      </ng-container>
+      <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Image</th>
+        <td mat-cell *matCellDef="let keyboard"><img [src]="keyboard.image" alt="Motherboard Image" width="100" style="display: block;"></td>
+      </ng-container>
+      <ng-container matColumnDef="stock">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.stock }}</td>
+      </ng-container>
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.price }}</td>
+      </ng-container>
+      <ng-container matColumnDef="warranty">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Warranty</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.warranty }}</td>
+      </ng-container>
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit</th>
+        <td mat-cell *matCellDef="let keyboard">
+          <button mat-icon-button color="primary" (click)="getEditedMotherboard(keyboard)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{filterValue}}"</td>
+      </tr>
+    </table>
+
+    <mat-paginator *ngIf="selectedMotherboard===null && !statsAddMotherboard" style="margin-top: 15px;" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    <div class="keyboard-content">
+      <div class="keyboard-edit" *ngIf="selectedMotherboard!==null">
+        <h3>Edit Motherboard</h3>
+        <ng-container *ngIf="selectedMotherboard">
+          <!-- Edit Form -->
+          <form (ngSubmit)="updateMotherboard()" #editForm="ngForm">
+            <div>
+              <label class="text-label">ID:</label>
+              <input type="text" name="id" class="input-text" [(ngModel)]="selectedMotherboard.id" required readonly [disabled]="true">
+            </div>
+            <div>
+              <label class="text-label">Image URL:</label>
+              <input type="text" name="image" class="input-text" [(ngModel)]="selectedMotherboard.image" required>
+            </div>
+            <div>
+              <label class="text-label">Stock:</label>
+              <input type="number" name="stock" class="input-text" [(ngModel)]="selectedMotherboard.stock" required>
+            </div>
+            <div>
+              <label class="text-label">Category:</label>
+              <input type="text" name="category" class="input-text" [(ngModel)]="selectedMotherboard.category" [disabled]="true" required>
+            </div>
+            <div>
+              <label class="text-label">Price:</label>
+              <input type="number" name="price" class="input-text" [(ngModel)]="selectedMotherboard.price" required>
+            </div>
+            <div>
+              <label class="text-label">Warranty:</label>
+              <input type="number" name="warranty" class="input-text" [(ngModel)]="selectedMotherboard.warranty" required>
+            </div>
+            <div>
+              <label class="text-label">Name:</label>
+              <input type="text" name="name" class="input-text" [(ngModel)]="selectedMotherboard.name" required>
+            </div>
+            <div>
+              <label class="text-label">Format:</label>
+              <input type="text" name="format" class="input-text" [(ngModel)]="selectedMotherboard.format" required>
+            </div>
+
+            <div>
+              <label class="text-label">Processor Socket:</label>
+              <input type="text" name="processorSocket" class="input-text" [(ngModel)]="selectedMotherboard.processorSocket" required>
+            </div>
+            <div>
+              <label class="text-label">Memory Type:</label>
+              <input type="text" name="memoryType" class="input-text" [(ngModel)]="selectedMotherboard.memoryType" required>
+            </div>
+            <div>
+              <label class="text-label">Number of Slots:</label>
+              <input type="number" name="numberOfSlots" class="input-text" [(ngModel)]="selectedMotherboard.numberOfSlots" required>
+            </div>
+            <div>
+              <label class="text-label">Audio Chipset:</label>
+              <input type="text" name="audioChipset" class="input-text" [(ngModel)]="selectedMotherboard.audioChipset" required>
+            </div>
+            <div>
+              <label class="text-label">Integrated Network Card:</label>
+              <input type="text" name="integratedNetworkcard" class="input-text" [(ngModel)]="selectedMotherboard.integratedNetworkcard" required>
+            </div>
+            <div>
+              <label class="text-label">Integrated Video Card:</label>
+              <input type="text" name="integratedVideocard" class="input-text" [(ngModel)]="selectedMotherboard.integratedVideocard" required>
+            </div>
+            <div>
+              <label class="text-label">Sata Slots Number:</label>
+              <input type="number" name="sataNumber" class="input-text" [(ngModel)]="selectedMotherboard.sataNumber" required>
+            </div>
+            <div>
+              <label class="text-label">Ssd Slots Number:</label>
+              <input type="number" name="ssdNumber" class="input-text" [(ngModel)]="selectedMotherboard.ssdNumber" required>
+            </div>
+            <div>
+              <label class="text-label">Other:</label>
+              <textarea name="other" [(ngModel)]="selectedMotherboard.other"></textarea>
+            </div>
+
+            <button type="submit" [disabled]="editForm.invalid">Update</button>
+            <button type="button" (click)="cancelEdit()">Cancel</button>
+          </form>
+        </ng-container>
+      </div>
+    </div>
+    <div class="keyboard-content">
+      <div class="keyboard-edit" *ngIf="statsAddMotherboard">
+        <h3>Add Motherboard</h3>
+        <ng-container *ngIf="statsAddMotherboard">
+          <!-- Edit Form -->
+          <form (ngSubmit)="addMotherboard()" #editForm2="ngForm">
+            <div>
+              <label class="text-label">Image:</label>
+              <input type="text" name="image" class="input-text" [(ngModel)]="newMotherboard.image" required>
+            </div>
+            <div>
+              <label class="text-label">Stock:</label>
+              <input type="number" name="stock" class="input-text" [(ngModel)]="newMotherboard.stock" required>
+            </div>
+            <div>
+              <label class="text-label">Category:</label>
+              <input type="text" name="category" class="input-text" [(ngModel)]="newMotherboard.category" [disabled]="true" required>
+            </div>
+            <div>
+              <label class="text-label">Price:</label>
+              <input type="number" name="price" class="input-text" [(ngModel)]="newMotherboard.price" required>
+            </div>
+            <div>
+              <label class="text-label">Warranty:</label>
+              <input type="number" name="warranty" class="input-text" [(ngModel)]="newMotherboard.warranty" required>
+            </div>
+            <div>
+              <label class="text-label">Name:</label>
+              <input type="text" name="name" class="input-text" [(ngModel)]="newMotherboard.name" required>
+            </div>
+            <div>
+              <label class="text-label">Format:</label>
+              <input type="text" name="format" class="input-text" [(ngModel)]="newMotherboard.format" required>
+            </div>
+
+            <div>
+              <label class="text-label">Processor Socket:</label>
+              <input type="text" name="processorSocket" class="input-text" [(ngModel)]="newMotherboard.processorSocket" required>
+            </div>
+            <div>
+              <label class="text-label">Memory Type:</label>
+              <input type="text" name="memoryType" class="input-text" [(ngModel)]="newMotherboard.memoryType" required>
+            </div>
+            <div>
+              <label class="text-label">Number of Slots:</label>
+              <input type="number" name="numberOfSlots" class="input-text" [(ngModel)]="newMotherboard.numberOfSlots" required>
+            </div>
+            <div>
+              <label class="text-label">Audio Chipset:</label>
+              <input type="text" name="audioChipset" class="input-text" [(ngModel)]="newMotherboard.audioChipset" required>
+            </div>
+            <div>
+              <label class="text-label">Integrated Network Card:</label>
+              <input type="text" name="integratedNetworkcard" class="input-text" [(ngModel)]="newMotherboard.integratedNetworkcard" required>
+            </div>
+            <div>
+              <label class="text-label">Integrated Video Card:</label>
+              <input type="text" name="integratedVideocard" class="input-text" [(ngModel)]="newMotherboard.integratedVideocard" required>
+            </div>
+            <div>
+              <label class="text-label">Sata Slots Number:</label>
+              <input type="number" name="sataNumber" class="input-text" [(ngModel)]="newMotherboard.sataNumber" required>
+            </div>
+            <div>
+              <label class="text-label">Ssd Slots Number:</label>
+              <input type="number" name="ssdNumber" class="input-text" [(ngModel)]="newMotherboard.ssdNumber" required>
+            </div>
+            <div>
+              <label class="text-label">Other:</label>
+              <textarea name="other" [(ngModel)]="newMotherboard.other"></textarea>
+            </div>
+
+            <button type="submit" [disabled]="editForm2.invalid">Add</button>
+            <button type="button" (click)="toggleAddMotherboardForm()">Cancel</button>
+          </form>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  </div>

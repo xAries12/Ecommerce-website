@@ -1,0 +1,216 @@
+<div class="keyboard-container">
+  <div class="search-container" *ngIf="selectedSsd===null && !statsAddSsd">
+    <label class="search-label">Search:</label>
+    <input matInput type="text" [(ngModel)]="filterValue" (input)="applyFilter()" placeholder="Enter ID or Name" class="search-input">
+  </div>
+  <div class="search-container"  *ngIf="selectedSsd===null && !statsAddSsd">
+    <label class="search-label">Add new SSD</label><button class="button-confirm" (click)="toggleAddSsdForm()"><mat-icon>add</mat-icon></button>
+  </div>
+
+  <div class="mat-elevation-z8">
+    <table mat-table *ngIf="selectedSsd===null && !statsAddSsd" [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.id }}</td>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.name }}</td>
+      </ng-container>
+      <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Image</th>
+        <td mat-cell *matCellDef="let keyboard"><img [src]="keyboard.image" alt="Ssd Image" width="100" style="display: block;"></td>
+      </ng-container>
+      <ng-container matColumnDef="stock">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.stock }}</td>
+      </ng-container>
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.price }}</td>
+      </ng-container>
+      <ng-container matColumnDef="warranty">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Warranty</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.warranty }}</td>
+      </ng-container>
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit</th>
+        <td mat-cell *matCellDef="let keyboard">
+          <button mat-icon-button color="primary" (click)="getEditedSsd(keyboard)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{filterValue}}"</td>
+      </tr>
+    </table>
+
+    <mat-paginator *ngIf="selectedSsd===null && !statsAddSsd" style="margin-top: 15px;" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    <div class="keyboard-content">
+      <div class="keyboard-edit" *ngIf="selectedSsd!==null">
+        <h3>Edit SSD</h3>
+        <ng-container *ngIf="selectedSsd">
+          <!-- Edit Form -->
+          <form (ngSubmit)="updateSsd()" #editForm="ngForm">
+            <div>
+              <label class="text-label">ID:</label>
+              <input type="text" name="id" class="input-text" [(ngModel)]="selectedSsd.id" required readonly [disabled]="true">
+            </div>
+            <div>
+              <label class="text-label">Image URL:</label>
+              <input type="text" name="image" class="input-text" [(ngModel)]="selectedSsd.image" required>
+            </div>
+            <div>
+              <label class="text-label">Stock:</label>
+              <input type="number" name="stock" class="input-text" [(ngModel)]="selectedSsd.stock" required>
+            </div>
+            <div>
+              <label class="text-label">Category:</label>
+              <input type="text" name="category" class="input-text" [(ngModel)]="selectedSsd.category" [disabled]="true" required>
+            </div>
+            <div>
+              <label class="text-label">Price:</label>
+              <input type="number" name="price" class="input-text" [(ngModel)]="selectedSsd.price" required>
+            </div>
+            <div>
+              <label class="text-label">Warranty:</label>
+              <input type="number" name="warranty" class="input-text" [(ngModel)]="selectedSsd.warranty" required>
+            </div>
+            <div>
+              <label class="text-label">Name:</label>
+              <input type="text" name="name" class="input-text" [(ngModel)]="selectedSsd.name" required>
+            </div>
+            <div>
+              <label class="text-label">Type:</label>
+              <select name="type" [(ngModel)]="selectedSsd.typeSsd" [value]="selectedSsd.typeSsd" required>
+                <option value="Intern">Intern</option>
+                <option value="Extern">Extern</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-label">Form Factor:</label>
+              <input type="text" name="formFactor" class="input-text" [(ngModel)]="selectedSsd.formFactor" required>
+            </div>
+            <div>
+              <label class="text-label">Interface Type:</label>
+              <input type="text" name="interfaceType" class="input-text" [(ngModel)]="selectedSsd.interfaceType" required>
+            </div>
+            <div>
+              <label class="text-label">Nvme Support:</label>
+              <div>
+                <label>
+                  <input type="radio" name="nvmeSupport" class="radio-elem"  [(ngModel)]="selectedSsd.nvmeSupport" [value]="true" required> True
+                </label>
+                <label>
+                  <input type="radio" name="nvmeSupport" class="radio-elem" [(ngModel)]="selectedSsd.nvmeSupport" [value]="false" required> False
+                </label>
+              </div>
+            </div>
+            <div>
+              <label class="text-label">Capacity:</label>
+              <input type="number" name="capacity" class="input-text" [(ngModel)]="selectedSsd.capacity" required>
+            </div>
+            <div>
+              <label class="text-label">Max Reading:</label>
+              <input type="number" name="maxReading" class="input-text" [(ngModel)]="selectedSsd.maxReading" required>
+            </div>
+            <div>
+              <label class="text-label">Max Write:</label>
+              <input type="number" name="maxWrite" class="input-text" [(ngModel)]="selectedSsd.maxWrite" required>
+            </div>
+            <div>
+              <label class="text-label">Other:</label>
+              <textarea name="other" [(ngModel)]="selectedSsd.other"></textarea>
+            </div>
+
+            <button type="submit" [disabled]="editForm.invalid">Update</button>
+            <button type="button" (click)="cancelEdit()">Cancel</button>
+          </form>
+        </ng-container>
+      </div>
+    </div>
+    <div class="keyboard-content">
+      <div class="keyboard-edit" *ngIf="statsAddSsd">
+        <h3>Add Ssd</h3>
+        <ng-container *ngIf="statsAddSsd">
+          <!-- Edit Form -->
+          <form (ngSubmit)="addSsd()" #editForm2="ngForm">
+            <div>
+              <label class="text-label">Image:</label>
+              <input type="text" name="image" class="input-text" [(ngModel)]="newSsd.image" required>
+            </div>
+            <div>
+              <label class="text-label">Stock:</label>
+              <input type="number" name="stock" class="input-text" [(ngModel)]="newSsd.stock" required>
+            </div>
+            <div>
+              <label class="text-label">Category:</label>
+              <input type="text" name="category" class="input-text" [(ngModel)]="newSsd.category" [disabled]="true" required>
+            </div>
+            <div>
+              <label class="text-label">Price:</label>
+              <input type="number" name="price" class="input-text" [(ngModel)]="newSsd.price" required>
+            </div>
+            <div>
+              <label class="text-label">Warranty:</label>
+              <input type="number" name="warranty" class="input-text" [(ngModel)]="newSsd.warranty" required>
+            </div>
+            <div>
+              <label class="text-label">Name:</label>
+              <input type="text" name="name" class="input-text" [(ngModel)]="newSsd.name" required>
+            </div>
+            <div>
+              <label class="text-label">Type:</label>
+              <select name="type" [(ngModel)]="newSsd.typeSsd" [value]="newSsd.typeSsd" required>
+                <option value="Intern">Intern</option>
+                <option value="Extern">Extern</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-label">Form Factor:</label>
+              <input type="text" name="formFactor" class="input-text" [(ngModel)]="newSsd.formFactor" required>
+            </div>
+            <div>
+              <label class="text-label">Interface Type:</label>
+              <input type="text" name="interfaceType" class="input-text" [(ngModel)]="newSsd.interfaceType" required>
+            </div>
+            <div>
+              <label class="text-label">Nvme Support:</label>
+              <div>
+                <label>
+                  <input type="radio" name="nvmeSupport" class="radio-elem"  [(ngModel)]="newSsd.nvmeSupport" [value]="true" required> True
+                </label>
+                <label>
+                  <input type="radio" name="nvmeSupport" class="radio-elem" [(ngModel)]="newSsd.nvmeSupport" [value]="false" required> False
+                </label>
+              </div>
+            </div>
+            <div>
+              <label class="text-label">Capacity:</label>
+              <input type="number" name="capacity" class="input-text" [(ngModel)]="newSsd.capacity" required>
+            </div>
+            <div>
+              <label class="text-label">Max Reading:</label>
+              <input type="number" name="maxReading" class="input-text" [(ngModel)]="newSsd.maxReading" required>
+            </div>
+            <div>
+              <label class="text-label">Max Write:</label>
+              <input type="number" name="maxWrite" class="input-text" [(ngModel)]="newSsd.maxWrite" required>
+            </div>
+            <div>
+              <label class="text-label">Other:</label>
+              <textarea name="other" [(ngModel)]="newSsd.other"></textarea>
+            </div>
+
+            <button type="submit" [disabled]="editForm2.invalid">Add</button>
+            <button type="button" (click)="toggleAddSsdForm()">Cancel</button>
+          </form>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  </div>

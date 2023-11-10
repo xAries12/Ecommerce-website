@@ -1,0 +1,85 @@
+<div class="search-bar">
+  <input type="text" placeholder="Search" [(ngModel)]="searchQuery" (input)="applyFilters()"/>
+</div>
+<div class="container">
+  <div class="container-fillter">
+    <mat-card>
+      <mat-card-content>
+        <mat-card-title>Filters:</mat-card-title>
+        <div>
+          <label for="brandFilter">Brand:</label>
+          <input type="text" id="brandFilter" [(ngModel)]="brandFilter" (input)="applyFilters()">
+
+          <label for="interfaceFilter">Interface:</label>
+          <select id="interfaceFilter" [(ngModel)]="interfaceFilter" (change)="applyFilters()">
+            <option value="USB">USB</option>
+            <option value="BLUETOOTH">Bluetooth</option>
+            <option value="BOTH">Both</option>
+          </select>
+
+          <label for="priceFilterMax">Max price:</label>
+          <input type="number" id="priceFilterMax" [(ngModel)]="priceFilterMax" (input)="applyFilters()">
+          <label for="priceFilterMin">Min price:</label>
+          <input type="number" id="priceFilterMin" [(ngModel)]="priceFilterMin" (input)="applyFilters()">
+        </div>
+      </mat-card-content>
+
+    </mat-card>
+    </div>
+
+  <div *ngIf="!filtred">
+  <div class="container-product">
+    <mat-card (click)="navigate(headset.id)" class="keyboard-card" *ngFor="let headset of headsets">
+      <mat-card-content >
+        <img class="img-product" [src]="headset.image" alt="Headset Image" width="200" style="display: block; margin: 0 auto;">
+        <mat-card-title>{{headset.name}}</mat-card-title><br  *ngIf="headset.name.length<38">
+        <mat-card-subtitle>{{headset.brand}}</mat-card-subtitle>
+        <p>Technology: {{ headset.technology }}</p>
+        <p>Connectivity: {{ headset.connectivity }}</p>
+        <p>Sound : {{ headset.sound }}</p>
+        <div class="stars" *ngIf="headset.reviews && !isNaN(starsOverAll(headset.reviews))">
+          <p>Reviews({{reviewsLength(headset.reviews)}}):</p>
+          <button *ngFor="let rating of starRatings" [class.filled]="rating <= starsOverAll( headset.reviews )" [disabled]>
+            <mat-icon>{{ rating <= starsOverAll( headset.reviews ) ? 'star' : 'star_border' }}</mat-icon>
+          </button>
+          </div>
+        <p style="margin-top: 8px; margin-bottom: 8px;" *ngIf="headset.reviews && isNaN(starsOverAll(headset.reviews))">No reviews</p><br>
+        <h3 style="color:red">Price: {{ headset.price }}€</h3>
+        <br>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="addToCart($event,headset.id)" *ngIf="headset.stock>0" class="add-cart-button"><mat-icon>add_shopping_cart</mat-icon>Add to cart</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  </div>
+  <div *ngIf="filtred">
+    <div class="container-product">
+
+      <mat-card (click)="navigate(headset.id)" class="keyboard-card" *ngFor="let headset of filteredProducts">
+        <mat-card-content>
+          <img class="img-product" [src]="headset.image" alt="Headset Image" width="200" style="display: block; margin: 0 auto;">
+          <mat-card-title>{{headset.name}}</mat-card-title><br  *ngIf="headset.name.length<38">
+          <mat-card-subtitle>{{headset.brand}}</mat-card-subtitle>
+          <p>Technology: {{ headset.technology }}</p>
+          <p>Connectivity: {{ headset.connectivity }}</p>
+          <p>Sound : {{ headset.sound }}</p>
+          <div class="stars" *ngIf="headset.reviews && !isNaN(starsOverAll(headset.reviews))">
+            <p>Reviews({{reviewsLength(headset.reviews)}}):</p>
+            <button *ngFor="let rating of starRatings" [class.filled]="rating <= starsOverAll( headset.reviews )" [disabled]>
+              <mat-icon>{{ rating <= starsOverAll( headset.reviews ) ? 'star' : 'star_border' }}</mat-icon>
+            </button>
+            </div>
+          <p *ngIf="headset.reviews && isNaN(starsOverAll(headset.reviews))">No reviews</p><br>
+          <h3 style="color:red">Price: {{ headset.price }}€</h3>
+          <br>
+
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button (click)="addToCart($event,headset.id)" *ngIf="headset.stock>0" class="add-cart-button"><mat-icon>add_shopping_cart</mat-icon>Add to cart</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    </div>
+  </div>
+

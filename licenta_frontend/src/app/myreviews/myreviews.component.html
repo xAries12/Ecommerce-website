@@ -1,0 +1,28 @@
+<div>
+<div class="review" *ngIf="reviews.length>0">
+  <table>
+    <tr>
+      <th>Product</th>
+      <th>Review</th>
+      <th>Stars</th>
+      <th>Date</th>
+    </tr>
+    <tr *ngFor="let review of reviews">
+      <td *ngIf="review.product" (click)="navigate(review.product)">{{review.product.name}}</td>
+      <td>{{ review.reviewMessage }}</td>
+      <td><div class="stars">
+        <button *ngFor="let rating of starRatings" [class.filled]="rating <= review.reviewStars">
+        <mat-icon>{{ rating <= review.reviewStars ? 'star' : 'star_border' }}</mat-icon>
+        </button>
+      </div>
+    </td>
+      <td>{{datepipe.transform(review.reviewDate, 'dd-MM-yyyy  hh:mm:ss')  }}</td>
+    </tr>
+  </table>
+  </div>
+  <div *ngIf="reviews.length===0">
+      <h2>You dont have reviews!</h2>
+  </div>
+</div>
+
+

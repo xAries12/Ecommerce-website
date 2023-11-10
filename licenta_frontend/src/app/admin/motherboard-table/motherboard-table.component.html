@@ -1,0 +1,194 @@
+<div class="keyboard-container">
+  <div class="search-container" *ngIf="selectedHardDisk===null && !statsAddHardDisk">
+    <label class="search-label">Search:</label>
+    <input matInput type="text" [(ngModel)]="filterValue" (input)="applyFilter()" placeholder="Enter ID or Name" class="search-input">
+  </div>
+  <div class="search-container"  *ngIf="selectedHardDisk===null && !statsAddHardDisk">
+    <label class="search-label">Add new Hard Disk</label><button class="button-confirm" (click)="toggleAddHardDiskForm()"><mat-icon>add</mat-icon></button>
+  </div>
+
+  <div class="mat-elevation-z8">
+    <table mat-table *ngIf="selectedHardDisk===null && !statsAddHardDisk" [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.id }}</td>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.name }}</td>
+      </ng-container>
+      <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Image</th>
+        <td mat-cell *matCellDef="let keyboard"><img [src]="keyboard.image" alt="HardDisk Image" width="100" style="display: block;"></td>
+      </ng-container>
+      <ng-container matColumnDef="stock">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.stock }}</td>
+      </ng-container>
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.price }}</td>
+      </ng-container>
+      <ng-container matColumnDef="warranty">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Warranty</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.warranty }}</td>
+      </ng-container>
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit</th>
+        <td mat-cell *matCellDef="let keyboard">
+          <button mat-icon-button color="primary" (click)="getEditedHardDisk(keyboard)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{filterValue}}"</td>
+      </tr>
+    </table>
+
+    <mat-paginator *ngIf="selectedHardDisk===null && !statsAddHardDisk" style="margin-top: 15px;" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    <div class="keyboard-content">
+      <div class="keyboard-edit" *ngIf="selectedHardDisk!==null">
+        <h3>Edit Hard Disk</h3>
+        <ng-container *ngIf="selectedHardDisk">
+          <!-- Edit Form -->
+          <form (ngSubmit)="updateHardDisk()" #editForm="ngForm">
+            <div>
+              <label class="text-label">ID:</label>
+              <input type="text" name="id" class="input-text" [(ngModel)]="selectedHardDisk.id" required readonly [disabled]="true">
+            </div>
+            <div>
+              <label class="text-label">Image URL:</label>
+              <input type="text" name="image" class="input-text" [(ngModel)]="selectedHardDisk.image" required>
+            </div>
+            <div>
+              <label class="text-label">Stock:</label>
+              <input type="number" name="stock" class="input-text" [(ngModel)]="selectedHardDisk.stock" required>
+            </div>
+            <div>
+              <label class="text-label">Category:</label>
+              <input type="text" name="category" class="input-text" [(ngModel)]="selectedHardDisk.category" [disabled]="true" required>
+            </div>
+            <div>
+              <label class="text-label">Price:</label>
+              <input type="number" name="price" class="input-text" [(ngModel)]="selectedHardDisk.price" required>
+            </div>
+            <div>
+              <label class="text-label">Warranty:</label>
+              <input type="number" name="warranty" class="input-text" [(ngModel)]="selectedHardDisk.warranty" required>
+            </div>
+            <div>
+              <label class="text-label">Name:</label>
+              <input type="text" name="name" class="input-text" [(ngModel)]="selectedHardDisk.name" required>
+            </div>
+            <div>
+              <label class="text-label">Series:</label>
+              <input type="text" name="series" class="input-text" [(ngModel)]="selectedHardDisk.series" required>
+            </div>
+            <div>
+              <label class="text-label">Interface Type:</label>
+              <input type="text" name="interfaceType" class="input-text" [(ngModel)]="selectedHardDisk.interfaceType" required>
+            </div>
+            <div>
+              <label class="text-label">Type HDD:</label>
+              <select name="type" [(ngModel)]="selectedHardDisk.typeHdd" [value]="selectedHardDisk.typeHdd" required>
+                <option value="Intern">Intern</option>
+                <option value="Extern">Extern</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-label">Buffer:</label>
+              <input type="number" name="buffer" class="input-text" [(ngModel)]="selectedHardDisk.buffer" required>
+            </div>
+            <div>
+              <label class="text-label">Capacity:</label>
+              <input type="number" name="capacity" class="input-text" [(ngModel)]="selectedHardDisk.capacity" required>
+            </div>
+            <div>
+              <label class="text-label">Speed:</label>
+              <input type="number" name="speed" class="input-text" [(ngModel)]="selectedHardDisk.speed" required>
+            </div>
+            <div>
+              <label class="text-label">Other:</label>
+              <textarea name="other" [(ngModel)]="selectedHardDisk.other"></textarea>
+            </div>
+
+            <button type="submit" [disabled]="editForm.invalid">Update</button>
+            <button type="button" (click)="cancelEdit()">Cancel</button>
+          </form>
+        </ng-container>
+      </div>
+    </div>
+    <div class="keyboard-content">
+      <div class="keyboard-edit" *ngIf="statsAddHardDisk">
+        <h3>Add HardDisk</h3>
+        <ng-container *ngIf="statsAddHardDisk">
+          <!-- Edit Form -->
+          <form (ngSubmit)="addHardDisk()" #editForm2="ngForm">
+            <div>
+              <label class="text-label">Image:</label>
+              <input type="text" name="image" class="input-text" [(ngModel)]="newHardDisk.image" required>
+            </div>
+            <div>
+              <label class="text-label">Stock:</label>
+              <input type="number" name="stock" class="input-text" [(ngModel)]="newHardDisk.stock" required>
+            </div>
+            <div>
+              <label class="text-label">Category:</label>
+              <input type="text" name="category" class="input-text" [(ngModel)]="newHardDisk.category" [disabled]="true" required>
+            </div>
+            <div>
+              <label class="text-label">Price:</label>
+              <input type="number" name="price" class="input-text" [(ngModel)]="newHardDisk.price" required>
+            </div>
+            <div>
+              <label class="text-label">Warranty:</label>
+              <input type="number" name="warranty" class="input-text" [(ngModel)]="newHardDisk.warranty" required>
+            </div>
+            <div>
+              <label class="text-label">Name:</label>
+              <input type="text" name="name" class="input-text" [(ngModel)]="newHardDisk.name" required>
+            </div>
+            <div>
+              <label class="text-label">Series:</label>
+              <input type="text" name="series" class="input-text" [(ngModel)]="newHardDisk.series" required>
+            </div>
+            <div>
+              <label class="text-label">Interface Type:</label>
+              <input type="text" name="interfaceType" class="input-text" [(ngModel)]="newHardDisk.interfaceType" required>
+            </div>
+            <div>
+              <label class="text-label">Type HDD:</label>
+              <select name="type" [(ngModel)]="newHardDisk.typeHdd" [value]="newHardDisk.typeHdd" required>
+                <option value="Intern">Intern</option>
+                <option value="Extern">Extern</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-label">Buffer:</label>
+              <input type="number" name="buffer" class="input-text" [(ngModel)]="newHardDisk.buffer" required>
+            </div>
+            <div>
+              <label class="text-label">Capacity:</label>
+              <input type="number" name="capacity" class="input-text" [(ngModel)]="newHardDisk.capacity" required>
+            </div>
+            <div>
+              <label class="text-label">Speed:</label>
+              <input type="number" name="speed" class="input-text" [(ngModel)]="newHardDisk.speed" required>
+            </div>
+            <div>
+              <label class="text-label">Other:</label>
+              <textarea name="other" [(ngModel)]="newHardDisk.other"></textarea>
+            </div>
+
+            <button type="submit" [disabled]="editForm2.invalid">Add</button>
+            <button type="button" (click)="toggleAddHardDiskForm()">Cancel</button>
+          </form>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  </div>

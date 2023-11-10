@@ -1,0 +1,64 @@
+# GET all products
+GET http://localhost:9090/products/headsets HTTP/1.1
+
+###
+
+# GET a specific product
+GET http://localhost:9090/products/headsets/1 HTTP/1.1
+
+###
+
+# POST a new product
+POST http://localhost:9090/products/headsets
+Content-Type: application/json
+
+{
+  "image": "img1",
+  "stock": 5,
+  "category": "headset",
+  "price": 100.0,
+  "warranty": 12,
+  "name": "Headset2",
+  "brand": "logitech",
+  "technology": "BOTH",
+  "sound": "7.1",
+  "type": "USB",
+  "sensitivity": "4000dpi",
+  "response": "ceva sensibil",
+  "microphoneNoiseCancelling": true,
+  "compatibility":"PC,PS4",
+  "connectivity": "USB",
+  "light": true,
+  "other": "other"
+}
+
+###
+
+# PUT (update) an existing product
+PUT http://localhost:9090/products/headsets/18
+Content-Type: application/json
+
+{
+  "image": "img1",
+  "stock": 5,
+  "category": "headset",
+  "price": 100.0,
+  "warranty": 12,
+  "name": "Headset3",
+  "brand": "logitech",
+  "technology": "BOTH",
+  "sound": "7.1",
+  "type": "USB",
+  "sensitivity": "4000dpi",
+  "response": "ceva sensibil",
+  "microphoneNoiseCancelling": 1,
+  "compatibility":"PC,PS4",
+  "connectivity": "USB",
+  "light": 1,
+  "other": "other"
+}
+
+###
+
+# DELETE a product
+DELETE http://localhost:9090/products/headsets/18

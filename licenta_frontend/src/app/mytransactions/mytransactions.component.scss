@@ -1,0 +1,68 @@
+.transactions-list {
+  padding: 20px;
+
+  h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin-bottom: 20px;
+
+      .transaction {
+        border: 1px solid #ccc;
+        padding: 10px;
+
+        .transaction-info {
+          margin-bottom: 10px;
+
+          .transaction-id,
+          .transaction-status,
+          .transaction-address,
+          .transaction-account {
+            display: block;
+            font-size: 16px;
+            color: #333;
+          }
+        }
+
+        .transaction-products {
+          h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+          }
+
+          ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+
+            li {
+              margin-bottom: 5px;
+
+              .product {
+                display: flex;
+                align-items: center;
+                font-size: 14px;
+
+                .product-name {
+                  flex-grow: 1;
+                  margin-right: 10px;
+                }
+
+                .product-count {
+                  color: #999;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

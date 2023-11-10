@@ -1,0 +1,287 @@
+.container-cart {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #000000;
+
+    th,
+    td {
+      padding: 0.5rem;
+      text-align: center;
+      border-bottom: 1px solid #000000;
+      border-left: 1px solid #000000;
+    }
+
+    th {
+      background-color: #f0f0f0;
+      border-bottom: 1px solid #000000;
+    }
+
+    .count-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      button {
+        padding: 0;
+        background-color: #e0e0e0;
+        border: none;
+        color: #333;
+        cursor: pointer;
+        border-radius: 50%;
+        mat-icon {
+          font-size: 1.5rem;
+        }
+
+      }
+
+      span {
+        margin: 0 0.5rem;
+        font-weight: bold;
+      }
+    }
+
+    img.img-product {
+      display: block;
+      margin: 0 auto;
+    }
+
+    button {
+      padding: 0;
+      background-color: rgb(233, 121, 121);
+      border: none;
+      cursor: pointer;
+      outline: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+
+      mat-icon {
+        font-size: 1.5rem;
+      }
+    }
+  }
+  .buy-button {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 50px;
+    background: #3f51b5;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #1976d2;
+    }
+    &:disabled{
+      background-color: gray;
+    }
+  }
+
+}
+.container-cart-next {
+  padding: 20px;
+
+  .address {
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+
+    h2 {
+      font-size: 38px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+
+      div {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+
+        input[type="radio"] {
+          margin-right: 10px;
+          scale: 1.5;
+        }
+
+        label {
+          font-size: 24px;
+        }
+      }
+    }
+  }
+
+  .payment {
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 20px;
+
+    h2 {
+      font-size: 38px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    form {
+      div {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+
+        input[type="radio"] {
+          margin-right: 10px;
+        }
+
+        label {
+          font-size: 24px;
+        }
+      }
+    }
+  }
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 50px;
+
+    .cancel-button {
+      background-color: #e0e0e0;
+      color: #333;
+      padding: 8px 16px;
+      margin-right: 10px;
+      border-radius: 4px;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #bdbdbd;
+      }
+    }
+
+    .buy-button {
+      background: #3f51b5;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #1976d2;
+      }
+      &:disabled{
+        background-color: gray;
+      }
+    }
+  }
+  form.add-address {
+    width: 700px;
+    margin-left: 20px;
+    .add-address-form {
+      h3 {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+
+        label {
+          display: block;
+          font-weight: bold;
+          margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+          width: 100%;
+          padding: 8px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+      }
+
+      .buttons {
+        display: flex;
+        align-items: center;
+        button {
+          padding: 10px 20px;
+          border-radius: 4px;
+          font-weight: bold;
+          cursor: pointer;
+
+          h4 {
+            margin: 0;
+          }
+        }
+
+        .button-confirm {
+          margin-right:10px;
+          background-color: #4caf50;
+          color: #fff;
+          border: none;
+          &:disabled{
+            background-color: grey;
+            &:hover {
+              background-color: #bdbdbd;
+            }
+          }
+          &:hover {
+            background-color: #419643;
+          }
+        }
+
+        .button-cancel {
+          background-color: #e0e0e0;
+          color: #000;
+          border: none;
+          &:hover {
+            background-color: #bdbdbd;
+          }
+        }
+      }
+    }
+  }
+  button.add-address-button {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: none;
+    margin-top: 10px;
+    background-color: rgb(47, 146, 47);
+    cursor: pointer;
+
+    mat-icon {
+      margin-right: 5px;
+      color: #ffffff;
+    }
+
+    p {
+      margin: 0;
+      color: #ffffff;
+    }
+    &:hover {
+      background-color: #419643;
+    }
+  }
+}

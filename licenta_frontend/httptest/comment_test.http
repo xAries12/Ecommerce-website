@@ -1,0 +1,9 @@
+# POST a new product
+POST http://localhost:9090/comments
+Content-Type: application/json
+
+{
+  "idReview":11,
+  "accountIdc":9,
+  "commentMessage":"Comment 5 have been edited"
+}

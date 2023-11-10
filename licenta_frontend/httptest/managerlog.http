@@ -1,0 +1,29 @@
+# GET all products
+GET http://localhost:9090/managers/logs HTTP/1.1
+
+###
+
+# GET a specific product
+GET http://localhost:9090/managers/2/logs HTTP/1.1
+
+###
+
+# POST a new product
+POST http://localhost:9090/managers/logs
+Content-Type: application/json
+
+{
+  "managerLogAction": "a facut ceva adminul",
+  "idc": 2,
+  "email": "email@gmail.com",
+  "firstname":"gigel",
+  "lastname":"frone",
+  "phoneNumber": "0000000000"
+
+}
+
+###
+
+
+# DELETE a product
+DELETE http://localhost:9090/managers/logs/2

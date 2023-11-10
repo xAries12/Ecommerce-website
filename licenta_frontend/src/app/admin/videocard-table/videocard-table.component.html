@@ -1,0 +1,209 @@
+<div class="keyboard-container">
+  <div class="search-container" *ngIf="selectedVideoCard===null && !statsAddVideoCard">
+    <label class="search-label">Search:</label>
+    <input matInput type="text" [(ngModel)]="filterValue" (input)="applyFilter()" placeholder="Enter ID or Name" class="search-input">
+  </div>
+  <div class="search-container"  *ngIf="selectedVideoCard===null && !statsAddVideoCard">
+    <label class="search-label">Add new video card</label><button class="button-confirm" (click)="toggleAddVideoCardForm()"><mat-icon>add</mat-icon></button>
+  </div>
+
+  <div class="mat-elevation-z8">
+    <table mat-table *ngIf="selectedVideoCard===null && !statsAddVideoCard" [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.id }}</td>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.name }}</td>
+      </ng-container>
+      <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Image</th>
+        <td mat-cell *matCellDef="let keyboard"><img [src]="keyboard.image" alt="VideoCard Image" width="100" style="display: block;"></td>
+      </ng-container>
+      <ng-container matColumnDef="stock">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.stock }}</td>
+      </ng-container>
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.price }}</td>
+      </ng-container>
+      <ng-container matColumnDef="warranty">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Warranty</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.warranty }}</td>
+      </ng-container>
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit</th>
+        <td mat-cell *matCellDef="let keyboard">
+          <button mat-icon-button color="primary" (click)="getEditedVideoCard(keyboard)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{filterValue}}"</td>
+      </tr>
+    </table>
+
+    <mat-paginator *ngIf="selectedVideoCard===null && !statsAddVideoCard" style="margin-top: 15px;" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    <div class="keyboard-content">
+      <div class="keyboard-edit" *ngIf="selectedVideoCard!==null">
+        <h3>Edit VideoCard</h3>
+        <ng-container *ngIf="selectedVideoCard">
+          <!-- Edit Form -->
+          <form (ngSubmit)="updateVideoCard()" #editForm="ngForm">
+            <div>
+              <label class="text-label">ID:</label>
+              <input type="text" name="id" class="input-text" [(ngModel)]="selectedVideoCard.id" required readonly [disabled]="true">
+            </div>
+            <div>
+              <label class="text-label">Image URL:</label>
+              <input type="text" name="image" class="input-text" [(ngModel)]="selectedVideoCard.image" required>
+            </div>
+            <div>
+              <label class="text-label">Stock:</label>
+              <input type="number" name="stock" class="input-text" [(ngModel)]="selectedVideoCard.stock" required>
+            </div>
+            <div>
+              <label class="text-label">Category:</label>
+              <input type="text" name="category" class="input-text" [(ngModel)]="selectedVideoCard.category" [disabled]="true" required>
+            </div>
+            <div>
+              <label class="text-label">Price:</label>
+              <input type="number" name="price" class="input-text" [(ngModel)]="selectedVideoCard.price" required>
+            </div>
+            <div>
+              <label class="text-label">Warranty:</label>
+              <input type="number" name="warranty" class="input-text" [(ngModel)]="selectedVideoCard.warranty" required>
+            </div>
+            <div>
+              <label class="text-label">Name:</label>
+              <input type="text" name="name" class="input-text" [(ngModel)]="selectedVideoCard.name" required>
+            </div>
+            <div>
+              <label class="text-label">Type:</label>
+              <select name="type" [(ngModel)]="selectedVideoCard.type" [value]="selectedVideoCard.type" required>
+                <option value="Integrated">Integrated</option>
+                <option value="Dedicated">Dedicated</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-label">Producer:</label>
+              <input type="text" name="producer" class="input-text" [(ngModel)]="selectedVideoCard.producer" required>
+            </div>
+            <div>
+              <label class="text-label">Family:</label>
+              <input type="text" name="family" class="input-text" [(ngModel)]="selectedVideoCard.family" required>
+            </div>
+            <div>
+              <label class="text-label">Model:</label>
+              <input type="text" name="model" class="input-text" [(ngModel)]="selectedVideoCard.model" required>
+            </div>
+            <div>
+              <label class="text-label">Series:</label>
+              <input type="text" name="series" class="input-text" [(ngModel)]="selectedVideoCard.series" required>
+            </div>
+            <div>
+              <label class="text-label">Memory Type:</label>
+              <input type="text" name="memoryType" class="input-text" [(ngModel)]="selectedVideoCard.memoryType" required>
+            </div>
+            <div>
+              <label class="text-label">Memory Size (GB):</label>
+              <input type="number" name="memorySize" class="input-text" [(ngModel)]="selectedVideoCard.memorySize" required>
+            </div>
+            <div>
+              <label class="text-label">Bus Memory:</label>
+              <input type="number" name="busMemory" class="input-text" [(ngModel)]="selectedVideoCard.busMemory" required>
+            </div>
+            <div>
+              <label class="text-label">Other:</label>
+              <textarea name="other" [(ngModel)]="selectedVideoCard.other"></textarea>
+            </div>
+
+            <button type="submit" [disabled]="editForm.invalid">Update</button>
+            <button type="button" (click)="cancelEdit()">Cancel</button>
+          </form>
+        </ng-container>
+      </div>
+    </div>
+    <div class="keyboard-content">
+      <div class="keyboard-edit" *ngIf="statsAddVideoCard">
+        <h3>Add VideoCard</h3>
+        <ng-container *ngIf="statsAddVideoCard">
+          <!-- Edit Form -->
+          <form (ngSubmit)="addVideoCard()" #editForm2="ngForm">
+            <div>
+              <label class="text-label">Image:</label>
+              <input type="text" name="image" class="input-text" [(ngModel)]="newVideoCard.image" required>
+            </div>
+            <div>
+              <label class="text-label">Stock:</label>
+              <input type="number" name="stock" class="input-text" [(ngModel)]="newVideoCard.stock" required>
+            </div>
+            <div>
+              <label class="text-label">Category:</label>
+              <input type="text" name="category" class="input-text" [(ngModel)]="newVideoCard.category" [disabled]="true" required>
+            </div>
+            <div>
+              <label class="text-label">Price:</label>
+              <input type="number" name="price" class="input-text" [(ngModel)]="newVideoCard.price" required>
+            </div>
+            <div>
+              <label class="text-label">Warranty:</label>
+              <input type="number" name="warranty" class="input-text" [(ngModel)]="newVideoCard.warranty" required>
+            </div>
+            <div>
+              <label class="text-label">Name:</label>
+              <input type="text" name="name" class="input-text" [(ngModel)]="newVideoCard.name" required>
+            </div>
+            <div>
+              <label class="text-label">Type:</label>
+              <select name="type" [(ngModel)]="newVideoCard.type" [value]="newVideoCard.type" required>
+                <option value="Integrated">Integrated</option>
+                <option value="Dedicated">Dedicated</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-label">Producer:</label>
+              <input type="text" name="producer" class="input-text" [(ngModel)]="newVideoCard.producer" required>
+            </div>
+            <div>
+              <label class="text-label">Family:</label>
+              <input type="text" name="family" class="input-text" [(ngModel)]="newVideoCard.family" required>
+            </div>
+            <div>
+              <label class="text-label">Model:</label>
+              <input type="text" name="model" class="input-text" [(ngModel)]="newVideoCard.model" required>
+            </div>
+            <div>
+              <label class="text-label">Series:</label>
+              <input type="text" name="series" class="input-text" [(ngModel)]="newVideoCard.series" required>
+            </div>
+            <div>
+              <label class="text-label">Memory Type:</label>
+              <input type="text" name="memoryType" class="input-text" [(ngModel)]="newVideoCard.memoryType" required>
+            </div>
+            <div>
+              <label class="text-label">Memory Size (GB):</label>
+              <input type="number" name="memorySize" class="input-text" [(ngModel)]="newVideoCard.memorySize" required>
+            </div>
+            <div>
+              <label class="text-label">Bus Memory:</label>
+              <input type="number" name="busMemory" class="input-text" [(ngModel)]="newVideoCard.busMemory" required>
+            </div>
+            <div>
+              <label class="text-label">Other:</label>
+              <textarea name="other" [(ngModel)]="newVideoCard.other"></textarea>
+            </div>
+            <button type="submit" [disabled]="editForm2.invalid">Add</button>
+            <button type="button" (click)="toggleAddVideoCardForm()">Cancel</button>
+          </form>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  </div>

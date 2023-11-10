@@ -1,0 +1,52 @@
+<!-- <div class="register-container">
+  <h1>Register</h1>
+  <form #regForm="ngForm">
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" [(ngModel)]="email" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" [(ngModel)]="password" required>
+    </div>
+    <div class="form-group">
+      <label for="firstname">First Name:</label>
+      <input type="text" id="firstname" name="firstname" [(ngModel)]="firstname" required>
+    </div>
+    <div class="form-group">
+      <label for="lastname">Last Name:</label>
+      <input type="text" id="lastname" name="lastname" [(ngModel)]="lastname" required>
+    </div>
+    <div class="form-group">
+      <label for="phoneNumber">Phone Number:</label>
+      <input type="text" id="phoneNumber" name="phoneNumber" [(ngModel)]="phoneNumber" required>
+    </div>
+    <button type="submit" (click)="registerData()" [disabled]="regForm.invalid || !emailFormControl.invalid" >Register</button>
+  </form>
+</div> -->
+<div class="register-container">
+  <h1>Register</h1>
+  <form [formGroup]="regForm" (ngSubmit)="registerData()">
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" formControlName="email" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" id="password" formControlName="password" required>
+    </div>
+    <div class="form-group">
+      <label for="firstname">First Name:</label>
+      <input type="text" id="firstname" formControlName="firstname" required>
+    </div>
+    <div class="form-group">
+      <label for="lastname">Last Name:</label>
+      <input type="text" id="lastname" formControlName="lastname" required>
+    </div>
+    <div class="form-group">
+      <label for="phoneNumber">Phone Number:</label>
+      <input type="text" id="phoneNumber" formControlName="phoneNumber" required>
+    </div>
+    <button type="submit" [disabled]="regForm.invalid">Register</button>
+  </form>
+</div>

@@ -1,0 +1,81 @@
+<div class="search-bar">
+  <input type="text" placeholder="Search" [(ngModel)]="searchQuery" (input)="applyFilters()"/>
+</div>
+<div class="container">
+  <div class="container-fillter">
+    <mat-card>
+      <mat-card-content>
+        <mat-card-title>Filters:</mat-card-title>
+        <div>
+          <label for="brandFilter">Series:</label>
+          <input type="text" id="brandFilter" [(ngModel)]="brandFilter" (input)="applyFilters()">
+
+          <label for="interfaceFilter">Type:</label>
+          <input type="text" id="brandFilter" [(ngModel)]="interfaceFilter" (input)="applyFilters()">
+
+          <label for="priceFilterMax">Max price:</label>
+          <input type="number" id="priceFilterMax" [(ngModel)]="priceFilterMax" (input)="applyFilters()">
+          <label for="priceFilterMin">Min price:</label>
+          <input type="number" id="priceFilterMin" [(ngModel)]="priceFilterMin" (input)="applyFilters()">
+        </div>
+      </mat-card-content>
+
+    </mat-card>
+    </div>
+
+  <div *ngIf="!filtred">
+  <div class="container-product">
+    <mat-card (click)="navigate(ram.id)" class="keyboard-card" *ngFor="let ram of rams">
+      <mat-card-content >
+        <img class="img-product" [src]="ram.image" alt="Ram Image" width="200" style="display: block; margin: 0 auto;">
+        <mat-card-title>{{ram.name}}</mat-card-title>
+        <mat-card-subtitle>{{ram.series}}</mat-card-subtitle>
+        <p>Capacity: {{ ram.capacity }} GB</p>
+        <p>Frequency: {{ ram.frequency }} MHz</p>
+        <p>Type: {{ ram.type }}</p>
+        <div class="stars" *ngIf="ram.reviews && !isNaN(starsOverAll(ram.reviews))">
+          <p>Reviews({{reviewsLength(ram.reviews)}}):</p>
+          <button *ngFor="let rating of starRatings" [class.filled]="rating <= starsOverAll( ram.reviews )" [disabled]>
+            <mat-icon>{{ rating <= starsOverAll( ram.reviews ) ? 'star' : 'star_border' }}</mat-icon>
+          </button>
+          </div>
+        <p style="margin-top: 8px; margin-bottom: 8px;" *ngIf="ram.reviews && isNaN(starsOverAll(ram.reviews))">No reviews</p><br>
+        <h3 style="color:red">Price: {{ ram.price }}€</h3>
+        <br>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="addToCart($event,ram.id)" *ngIf="ram.stock>0" class="add-cart-button"><mat-icon>add_shopping_cart</mat-icon>Add to cart</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  </div>
+  <div *ngIf="filtred">
+    <div class="container-product">
+
+      <mat-card (click)="navigate(ram.id)" class="keyboard-card" *ngFor="let ram of filteredProducts">
+        <mat-card-content>
+          <img class="img-product" [src]="ram.image" alt="Ram Image" width="200" style="display: block; margin: 0 auto;">
+          <mat-card-title>{{ram.name}}</mat-card-title>
+          <mat-card-subtitle>{{ram.series}}</mat-card-subtitle>
+          <p>Capacity: {{ ram.capacity }} GB</p>
+          <p>Frequency: {{ ram.frequency }} MHz</p>
+          <p>Type: {{ ram.type }}</p>
+          <div class="stars" *ngIf="ram.reviews && !isNaN(starsOverAll(ram.reviews))">
+            <p>Reviews({{reviewsLength(ram.reviews)}}):</p>
+            <button *ngFor="let rating of starRatings" [class.filled]="rating <= starsOverAll( ram.reviews )" [disabled]>
+              <mat-icon>{{ rating <= starsOverAll( ram.reviews ) ? 'star' : 'star_border' }}</mat-icon>
+            </button>
+            </div>
+          <p *ngIf="ram.reviews && isNaN(starsOverAll(ram.reviews))">No reviews</p><br>
+          <h3 style="color:red">Price: {{ ram.price }}€</h3>
+          <br>
+
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button (click)="addToCart($event,ram.id)" *ngIf="ram.stock>0" class="add-cart-button"><mat-icon>add_shopping_cart</mat-icon>Add to cart</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    </div>
+  </div>
+

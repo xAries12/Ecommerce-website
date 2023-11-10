@@ -1,0 +1,56 @@
+# GET all products
+GET http://localhost:9090/products/ram_memories HTTP/1.1
+
+###
+
+# GET a specific product
+GET http://localhost:9090/products/ram_memories/1 HTTP/1.1
+
+###
+
+# POST a new product
+POST http://localhost:9090/products/ram_memories
+Content-Type: application/json
+
+{
+  "image": "img1",
+  "stock": 5,
+  "category": "video_card",
+  "price": 100.0,
+  "warranty": 12,
+  "name":"CorsAir2",
+  "series": "seria",
+  "type":"DDR4",
+  "capacity": 16,
+  "frequency": 3400,
+  "lighting": false,
+  "color":"red",
+  "other": "other"
+}
+
+###
+
+# PUT (update) an existing product
+PUT http://localhost:9090/products/ram_memories/25
+Content-Type: application/json
+
+{
+  "image": "img1",
+  "stock": 5,
+  "category": "video_card",
+  "price": 100.0,
+  "warranty": 12,
+  "name":"KingStone",
+  "series": "seria",
+  "type":"DDR4",
+  "capacity": 16,
+  "frequency": 3400,
+  "lighting": false,
+  "color":"red",
+  "other": "other"
+}
+
+###
+
+# DELETE a product
+DELETE http://localhost:9090/products/ram_memories/26

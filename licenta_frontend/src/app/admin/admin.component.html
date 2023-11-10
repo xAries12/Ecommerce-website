@@ -1,0 +1,69 @@
+<div class="container">
+<button style="margin:5px; background-color: #3f51b5; color: white;" (click)="menuIndex=1" mat-button>Products</button>
+<button style="margin:5px; background-color: #3f51b5; color: white;" (click)="menuIndex=2" mat-button>Accounts</button>
+<button style="margin:5px; background-color: #3f51b5; color: white;" (click)="menuIndex=3" mat-button>Reviews</button>
+<button style="margin:5px; background-color: #3f51b5; color: white;" (click)="menuIndex=4" mat-button>Comments</button>
+<button style="margin:5px; background-color: #3f51b5; color: white;" (click)="menuIndex=5" mat-button>Transactions</button>
+
+<mat-tab-group *ngIf="menuIndex && menuIndex===1">
+  <mat-tab label="Keyboard">
+    <app-keyboard-table></app-keyboard-table>
+  </mat-tab>
+  <mat-tab label="Hard Disk">
+    <app-motherboard-table></app-motherboard-table>
+  </mat-tab>
+  <mat-tab label="Headset">
+    <app-headset-table></app-headset-table>
+  </mat-tab>
+  <mat-tab label="Motherboard">
+    <app-harddisk-table></app-harddisk-table>
+  </mat-tab>
+  <mat-tab label="Monitor">
+    <app-monitor-table></app-monitor-table>
+  </mat-tab>
+  <mat-tab label="Mouse">
+    <app-mouse-table></app-mouse-table>
+  </mat-tab>
+  <mat-tab label="Processor">
+    <app-processor-table></app-processor-table>
+  </mat-tab>
+  <mat-tab label="Video Card">
+    <app-videocard-table></app-videocard-table>
+  </mat-tab>
+  <mat-tab label="SSD">
+    <app-ssd-table></app-ssd-table>
+  </mat-tab>
+  <mat-tab label="RAM Memory">
+    <app-rammemory-table></app-rammemory-table>
+  </mat-tab>
+</mat-tab-group>
+
+
+<div class="accounts-container" *ngIf="menuIndex===2">
+  <app-account-table></app-account-table>
+</div>
+
+<div class="review-container" *ngIf="menuIndex===3">
+  <button style="margin:5px; background-color: #3f51b5; color: white;" (click)="reviewIndex=1" mat-button>New Reviews</button>
+  <button style="margin:5px; background-color: #3f51b5; color: white;" (click)="reviewIndex=2" mat-button>Reviews</button>
+  <div *ngIf="reviewIndex===1">
+    <app-review-table></app-review-table>
+  </div>
+  <div *ngIf="reviewIndex===2">
+    <app-review-table-all></app-review-table-all>
+  </div>
+</div>
+
+<div class="comment-container" *ngIf="menuIndex===4">
+  <button style="margin:5px; background-color: #3f51b5; color: white;" (click)="commentIndex=1" mat-button>New Comments</button>
+  <button style="margin:5px; background-color: #3f51b5; color: white;" (click)="commentIndex=2" mat-button>Comments</button>
+  <div *ngIf="commentIndex==1">
+    <app-comment-table></app-comment-table>
+  </div>
+  <div *ngIf="commentIndex==2">
+    <app-comment-table-all></app-comment-table-all>
+  </div>
+</div>
+<div class="comment-container" *ngIf="menuIndex===5">
+  <app-transaction-table></app-transaction-table>
+</div>

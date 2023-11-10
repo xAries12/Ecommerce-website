@@ -1,0 +1,44 @@
+ <mat-toolbar color="primary">
+  <span>PCShop</span>
+  <span class="spacer"></span>
+  <button routerLink="/home" mat-button>Home</button>
+  <button mat-button routerLink="/store/pc-system">PC System</button>
+  <mat-menu #peripheralsMenu="matMenu">
+    <button routerLink="/store/keyboards" mat-menu-item ><mat-icon>keyboard</mat-icon>Keyboard</button>
+    <button routerLink="/store/headsets" mat-menu-item><mat-icon>headset</mat-icon>Headset</button>
+    <button routerLink="/store/mouses" mat-menu-item><mat-icon>mouse</mat-icon>Mouse</button>
+    <button routerLink="/store/monitors" mat-menu-item><mat-icon>monitor</mat-icon>Monitor</button>
+  </mat-menu>
+  <button mat-button [matMenuTriggerFor]="peripheralsMenu">Peripherals</button>
+  <mat-menu #componentsMenu="matMenu">
+    <button routerLink="/store/processors" mat-menu-item><mat-icon>memory</mat-icon>Processor</button>
+    <button routerLink="/store/motherboards" mat-menu-item><mat-icon>account_tree</mat-icon>Motherboard</button>
+    <button routerLink="/store/videocards" mat-menu-item><mat-icon>videogame_asset</mat-icon>Videocard</button>
+    <button routerLink="/store/ram-memories" mat-menu-item><mat-icon>developer_board</mat-icon>Ram Memory</button>
+    <button routerLink="/store/hard-disk" mat-menu-item><mat-icon>storage</mat-icon>Hard disk</button>
+    <button routerLink="/store/ssd" mat-menu-item><mat-icon>sd_storage</mat-icon>SSD</button>
+  </mat-menu>
+  <button mat-button [matMenuTriggerFor]="componentsMenu">Components</button>
+  <span class="spacer"></span>
+  <button mat-raised-button color="primary" [matBadge]="getCartSize() > 0 ? getCartSize() : null" matBadgePosition="after" matBadgeColor="accent" routerLink="/cart">
+    <mat-icon>shopping_cart</mat-icon> Cart
+  </button>
+  <div *ngIf="!loginService.isLoggedIn()">
+  <button mat-raised-button color="accent" routerLink="/register"><mat-icon>person_add_alt</mat-icon>Sign Up</button>
+  <button mat-raised-button routerLink="/login"><mat-icon>login</mat-icon>Login</button>
+  </div>
+  <div class="login-panel" *ngIf="loginService.isLoggedIn()">
+    <p>{{loginService.getUsername()}}</p>
+    <button mat-icon-button class="example-icon" [matMenuTriggerFor]="menu"><mat-icon>menu</mat-icon></button>
+    <mat-menu #menu="matMenu">
+      <button (click)="navigate(loginService.getUsername())" mat-menu-item><mat-icon>account_circle</mat-icon><span>Account</span></button>
+      <button (click)="navigateAdmin()" *ngIf="((loginService.user && loginService.user.role==='ADMIN'))||(account && account.role==='ADMIN')" mat-menu-item><mat-icon>admin_panel_settings</mat-icon><span>Admin</span></button>
+      <button (click)="navigateManager()" *ngIf="((loginService.user && loginService.user.role==='MANAGER'))||(account && account.role==='MANAGER')" mat-menu-item><mat-icon>query_stats</mat-icon><span>Manager</span></button>
+      <button (click)="navigateAddresses(loginService.getUsername())"mat-menu-item><mat-icon>location_on</mat-icon><span>My addresses</span></button>
+      <button (click)="navigateTransactions(loginService.getUsername())" mat-menu-item><mat-icon>history</mat-icon><span>Purchase history</span></button>
+      <button (click)="navigateReviews(loginService.getUsername())"mat-menu-item><mat-icon>reviews</mat-icon><span>My reviews</span></button>
+      <button mat-menu-item *ngIf="loginService.isLoggedIn()" type="submit"  (click)="logOut()" routerLink="/login"><mat-icon>logout</mat-icon>Logout</button>
+    </mat-menu>
+    </div>
+</mat-toolbar>
+

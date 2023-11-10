@@ -1,0 +1,17 @@
+# POST a new product
+POST http://localhost:9090/reviews
+Content-Type: application/json
+
+{
+  "productId":31,
+  "accountId":9,
+  "content":"Test comment",
+  "reviewStars":5
+}
+###
+GET http://localhost:9090/reviews/9
+Content-Type: application/json
+
+###
+GET http://localhost:9090/my_reviews/9
+Content-Type: application/json

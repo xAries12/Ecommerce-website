@@ -1,0 +1,202 @@
+<div class="keyboard-container">
+  <div class="search-container" *ngIf="selectedRamMemory===null && !statsAddRamMemory">
+    <label class="search-label">Search:</label>
+    <input matInput type="text" [(ngModel)]="filterValue" (input)="applyFilter()" placeholder="Enter ID or Name" class="search-input">
+  </div>
+  <div class="search-container"  *ngIf="selectedRamMemory===null && !statsAddRamMemory">
+    <label class="search-label">Add new RAM</label><button class="button-confirm" (click)="toggleAddRamMemoryForm()"><mat-icon>add</mat-icon></button>
+  </div>
+
+  <div class="mat-elevation-z8">
+    <table mat-table *ngIf="selectedRamMemory===null && !statsAddRamMemory" [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.id }}</td>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.name }}</td>
+      </ng-container>
+      <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Image</th>
+        <td mat-cell *matCellDef="let keyboard"><img [src]="keyboard.image" alt="RamMemory Image" width="100" style="display: block;"></td>
+      </ng-container>
+      <ng-container matColumnDef="stock">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.stock }}</td>
+      </ng-container>
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.price }}</td>
+      </ng-container>
+      <ng-container matColumnDef="warranty">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Warranty</th>
+        <td mat-cell *matCellDef="let keyboard">{{ keyboard.warranty }}</td>
+      </ng-container>
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit</th>
+        <td mat-cell *matCellDef="let keyboard">
+          <button mat-icon-button color="primary" (click)="getEditedRamMemory(keyboard)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{filterValue}}"</td>
+      </tr>
+    </table>
+
+    <mat-paginator *ngIf="selectedRamMemory===null && !statsAddRamMemory" style="margin-top: 15px;" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    <div class="keyboard-content">
+      <div class="keyboard-edit" *ngIf="selectedRamMemory!==null">
+        <h3>Edit RAM</h3>
+        <ng-container *ngIf="selectedRamMemory">
+          <!-- Edit Form -->
+          <form (ngSubmit)="updateRamMemory()" #editForm="ngForm">
+            <div>
+              <label class="text-label">ID:</label>
+              <input type="text" name="id" class="input-text" [(ngModel)]="selectedRamMemory.id" required readonly [disabled]="true">
+            </div>
+            <div>
+              <label class="text-label">Image URL:</label>
+              <input type="text" name="image" class="input-text" [(ngModel)]="selectedRamMemory.image" required>
+            </div>
+            <div>
+              <label class="text-label">Stock:</label>
+              <input type="number" name="stock" class="input-text" [(ngModel)]="selectedRamMemory.stock" required>
+            </div>
+            <div>
+              <label class="text-label">Category:</label>
+              <input type="text" name="category" class="input-text" [(ngModel)]="selectedRamMemory.category" [disabled]="true" required>
+            </div>
+            <div>
+              <label class="text-label">Price:</label>
+              <input type="number" name="price" class="input-text" [(ngModel)]="selectedRamMemory.price" required>
+            </div>
+            <div>
+              <label class="text-label">Warranty:</label>
+              <input type="number" name="warranty" class="input-text" [(ngModel)]="selectedRamMemory.warranty" required>
+            </div>
+            <div>
+              <label class="text-label">Name:</label>
+              <input type="text" name="name" class="input-text" [(ngModel)]="selectedRamMemory.name" required>
+            </div>
+            <div>
+              <label class="text-label">Series:</label>
+              <input type="text" name="series" class="input-text" [(ngModel)]="selectedRamMemory.series" required>
+            </div>
+            <div>
+              <label class="text-label">Type:</label>
+              <input type="text" name="type" class="input-text" [(ngModel)]="selectedRamMemory.type" required>
+            </div>
+            <div>
+              <label class="text-label">Capacity:</label>
+              <input type="number" name="capacity" class="input-text" [(ngModel)]="selectedRamMemory.capacity" required>
+            </div>
+            <div>
+              <label class="text-label">Frequency:</label>
+              <input type="number" name="frequency" class="input-text" [(ngModel)]="selectedRamMemory.frequency" required>
+            </div>
+            <div>
+              <label class="text-label">Lighting:</label>
+              <div>
+                <label>
+                  <input type="radio" name="lighting" class="radio-elem" [(ngModel)]="selectedRamMemory.lighting" [value]="true" required> Yes
+                </label>
+                <label>
+                  <input type="radio" name="lighting" class="radio-elem" [(ngModel)]="selectedRamMemory.lighting" [value]="false" required> No
+                </label>
+              </div>
+            </div>
+            <div>
+              <label class="text-label">Color:</label>
+              <input type="text" name="color" class="input-text" [(ngModel)]="selectedRamMemory.color" required>
+            </div>
+            <div>
+              <label class="text-label">Other:</label>
+              <textarea name="other" [(ngModel)]="selectedRamMemory.other"></textarea>
+            </div>
+
+            <button type="submit" [disabled]="editForm.invalid">Update</button>
+            <button type="button" (click)="cancelEdit()">Cancel</button>
+          </form>
+        </ng-container>
+      </div>
+    </div>
+    <div class="keyboard-content">
+      <div class="keyboard-edit" *ngIf="statsAddRamMemory">
+        <h3>Add RamMemory</h3>
+        <ng-container *ngIf="statsAddRamMemory">
+          <!-- Edit Form -->
+          <form (ngSubmit)="addRamMemory()" #editForm2="ngForm">
+            <div>
+              <label class="text-label">Image:</label>
+              <input type="text" name="image" class="input-text" [(ngModel)]="newRamMemory.image" required>
+            </div>
+            <div>
+              <label class="text-label">Stock:</label>
+              <input type="number" name="stock" class="input-text" [(ngModel)]="newRamMemory.stock" required>
+            </div>
+            <div>
+              <label class="text-label">Category:</label>
+              <input type="text" name="category" class="input-text" [(ngModel)]="newRamMemory.category" [disabled]="true" required>
+            </div>
+            <div>
+              <label class="text-label">Price:</label>
+              <input type="number" name="price" class="input-text" [(ngModel)]="newRamMemory.price" required>
+            </div>
+            <div>
+              <label class="text-label">Warranty:</label>
+              <input type="number" name="warranty" class="input-text" [(ngModel)]="newRamMemory.warranty" required>
+            </div>
+            <div>
+              <label class="text-label">Name:</label>
+              <input type="text" name="name" class="input-text" [(ngModel)]="newRamMemory.name" required>
+            </div>
+            <div>
+              <label class="text-label">Series:</label>
+              <input type="text" name="series" class="input-text" [(ngModel)]="newRamMemory.series" required>
+            </div>
+            <div>
+              <label class="text-label">Type:</label>
+              <input type="text" name="type" class="input-text" [(ngModel)]="newRamMemory.type" required>
+            </div>
+            <div>
+              <label class="text-label">Capacity:</label>
+              <input type="number" name="capacity" class="input-text" [(ngModel)]="newRamMemory.capacity" required>
+            </div>
+            <div>
+              <label class="text-label">Frequency:</label>
+              <input type="number" name="frequency" class="input-text" [(ngModel)]="newRamMemory.frequency" required>
+            </div>
+            <div>
+              <label class="text-label">Lighting:</label>
+              <div>
+                <label>
+                  <input type="radio" name="lighting" class="radio-elem" [(ngModel)]="newRamMemory.lighting" [value]="true" required> Yes
+                </label>
+                <label>
+                  <input type="radio" name="lighting" class="radio-elem" [(ngModel)]="newRamMemory.lighting" [value]="false" required> No
+                </label>
+              </div>
+            </div>
+            <div>
+              <label class="text-label">Color:</label>
+              <input type="text" name="color" class="input-text" [(ngModel)]="newRamMemory.color" required>
+            </div>
+            <div>
+              <label class="text-label">Other:</label>
+              <textarea name="other" [(ngModel)]="newRamMemory.other"></textarea>
+            </div>
+
+            <button type="submit" [disabled]="editForm2.invalid">Add</button>
+            <button type="button" (click)="toggleAddRamMemoryForm()">Cancel</button>
+          </form>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  </div>

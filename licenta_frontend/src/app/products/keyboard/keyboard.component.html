@@ -1,0 +1,88 @@
+<div class="search-bar">
+  <input type="text" placeholder="Search" [(ngModel)]="searchQuery" (input)="applyFilters()"/>
+</div>
+<div class="container">
+<div class="container-fillter">
+  <mat-card>
+    <mat-card-content>
+      <mat-card-title>Filters:</mat-card-title>
+      <div>
+        <label for="brandFilter">Brand:</label>
+        <input type="text" id="brandFilter" [(ngModel)]="brandFilter" (input)="applyFilters()">
+
+        <label for="interfaceFilter">Interface:</label>
+        <select id="interfaceFilter" [(ngModel)]="interfaceFilter" (change)="applyFilters()">
+          <option value="USB">USB</option>
+          <option value="BLUETOOTH">Bluetooth</option>
+          <option value="BOTH">Both</option>
+        </select>
+
+        <label for="priceFilterMax">Max price:</label>
+        <input type="number" id="priceFilterMax" [(ngModel)]="priceFilterMax" (input)="applyFilters()">
+        <label for="priceFilterMin">Min price:</label>
+        <input type="number" id="priceFilterMin" [(ngModel)]="priceFilterMin" (input)="applyFilters()">
+      </div>
+    </mat-card-content>
+
+  </mat-card>
+  </div>
+
+<div *ngIf="!filtred">
+<div class="container-product">
+  <mat-card (click)="navigate(keyboard.id)" class="keyboard-card" *ngFor="let keyboard of keyboards">
+    <mat-card-content >
+      <img class="img-product" [src]="keyboard.image" alt="Keyboard Image" width="200" style="display: block; margin: 0 auto;">
+      <mat-card-title>{{keyboard.name}}</mat-card-title><br  *ngIf="keyboard.name.length<35">
+      <mat-card-title></mat-card-title>
+      <mat-card-subtitle>{{keyboard.brand}}</mat-card-subtitle>
+      <p>Type: {{ keyboard.type }}</p>
+      <p *ngIf="keyboard.lighting">Lighting: Yes</p>
+      <p *ngIf="!keyboard.lighting">Lighting: Nu</p>
+      <p>Layout: {{ keyboard.layout }}</p>
+      <div class="stars" *ngIf="keyboard.reviews && !isNaN(starsOverAll(keyboard.reviews))">
+      <p>Reviews({{reviewsLength(keyboard.reviews)}}):</p>
+        <button *ngFor="let rating of starRatings" [class.filled]="rating <= starsOverAll( keyboard.reviews )" [disabled]>
+          <mat-icon>{{ rating <= starsOverAll( keyboard.reviews ) ? 'star' : 'star_border' }}</mat-icon>
+        </button>
+        </div>
+      <p style="margin-top: 8px; margin-bottom: 8px;" *ngIf="keyboard.reviews && isNaN(starsOverAll(keyboard.reviews))">No reviews</p><br>
+      <h3 style="color:red">Price: {{ keyboard.price }}€</h3>
+      <br>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button (click)="addToCart($event,keyboard.id)" *ngIf="keyboard.stock>0" class="add-cart-button"><mat-icon>add_shopping_cart</mat-icon>Add to cart</button>
+      <button mat-button *ngIf="keyboard.stock===0" class="add-cart-button" disabled="true">Out of Stock!</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+</div>
+<div *ngIf="filtred">
+  <div class="container-product">
+
+    <mat-card (click)="navigate(keyboard.id)" class="keyboard-card" *ngFor="let keyboard of filteredProducts">
+      <mat-card-content>
+        <img class="img-product" [src]="keyboard.image" alt="Keyboard Image" width="200" style="display: block; margin: 0 auto;">
+        <mat-card-title>{{keyboard.name}}</mat-card-title><br  *ngIf="keyboard.name.length<35">
+        <mat-card-subtitle>{{keyboard.brand}}</mat-card-subtitle>
+        <p>Type: {{ keyboard.type }}</p>
+        <p>Lighting: {{ keyboard.lighting }}</p>
+        <p>Layout: {{ keyboard.layout }}</p>
+        <div class="stars" *ngIf="keyboard.reviews && !isNaN(starsOverAll(keyboard.reviews))">
+        <p>Reviews({{reviewsLength(keyboard.reviews)}}):</p>
+          <button *ngFor="let rating of starRatings" [class.filled]="rating <= starsOverAll( keyboard.reviews )" [disabled]>
+            <mat-icon>{{ rating <= starsOverAll( keyboard.reviews ) ? 'star' : 'star_border' }}</mat-icon>
+          </button>
+          </div>
+        <p *ngIf="keyboard.reviews && isNaN(starsOverAll(keyboard.reviews))">No reviews</p><br>
+        <h3 style="color:red">Price: {{ keyboard.price }}€</h3>
+        <br>
+
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="addToCart($event,keyboard.id)" *ngIf="keyboard.stock>0" class="add-cart-button"><mat-icon>add_shopping_cart</mat-icon>Add to cart</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  </div>
+</div>
+

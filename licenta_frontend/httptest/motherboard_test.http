@@ -1,0 +1,62 @@
+# GET all products
+GET http://localhost:9090/products/motherboards HTTP/1.1
+
+###
+
+# GET a specific product
+GET http://localhost:9090/products/motherboards/1 HTTP/1.1
+
+###
+
+# POST a new product
+POST http://localhost:9090/products/motherboards
+Content-Type: application/json
+
+{
+  "image": "img1",
+  "stock": 5,
+  "category": "motherboard",
+  "price": 100.0,
+  "warranty": 12,
+  "name":"Asus Gaming",
+  "format":"format",
+  "processorSocket": "11403",
+  "memoryType":"DDR4",
+  "numberOfSlots":4,
+  "audioChipset": "Realtek",
+  "integratedNetworkcard": "TPLink",
+  "integratedVideocard": "Intel Radeon",
+  "sataNumber":3,
+  "ssdNumber": 3,
+  "other":"other"
+}
+
+###
+
+# PUT (update) an existing product
+PUT http://localhost:9090/products/motherboards/35
+Content-Type: application/json
+
+{
+  "image": "img1",
+  "stock": 5,
+  "category": "motherboard",
+  "price": 100.0,
+  "warranty": 12,
+  "name":"Asus Gaming Rupere",
+  "format":"format",
+  "processorSocket": "11403",
+  "memoryType":"DDR4",
+  "numberOfSlots":4,
+  "audioChipset": "Realtek",
+  "integratedNetworkcard": "TPLink",
+  "integratedVideocard": "Intel Radeon",
+  "sataNumber":3,
+  "ssdNumber": 3,
+  "other":"other"
+}
+
+###
+
+# DELETE a product
+DELETE http://localhost:9090/products/motherboards/35

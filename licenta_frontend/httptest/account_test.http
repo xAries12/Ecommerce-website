@@ -1,0 +1,49 @@
+# GET all products
+GET http://localhost:9090/accounts HTTP/1.1
+
+###
+
+# GET a specific product
+GET http://localhost:9090/accounts/9 HTTP/1.1
+
+
+###
+
+# GET a specific product
+GET http://localhost:9090/accounts/email/ad@ad.com HTTP/1.1
+
+
+###
+
+
+# POST a new product
+POST http://localhost:9090/store/register
+Content-Type: application/json
+
+{
+  "email": "george@gmail.com",
+  "password": "parola123",
+  "firstname": "George",
+  "lastname": "Dragomir",
+  "role": "USER",
+  "phoneNumber": "0740000000"
+}
+
+###
+
+# PUT (update) an existing product
+PUT http://localhost:9090/accounts/9
+Content-Type: application/json
+
+{
+  "firstname": "first22",
+  "lastname": "last",
+  "role": "ADMIN",
+  "phoneNumber": "000000000000",
+  "password":"ad"
+}
+
+###
+
+# DELETE a product
+DELETE http://localhost:9090/accounts/1

@@ -1,0 +1,62 @@
+# GET all products
+GET http://localhost:9090/products/monitors HTTP/1.1
+
+###
+
+# GET a specific product
+GET http://localhost:9090/products/monitors/14 HTTP/1.1
+
+###
+
+# POST a new product
+POST http://localhost:9090/products/monitors
+Content-Type: application/json
+
+{
+  "image": "img2",
+  "stock": 5,
+  "category": "monitor",
+  "price": 100.0,
+  "warranty": 12,
+  "name": "Monitor2",
+  "brand": "Acer",
+  "diagonal": 27.6,
+  "resolution": "1920x1080",
+  "responseTime": 1,
+  "refreshRate": 60,
+  "technology": "tech",
+  "color": "black",
+  "aspectRatio": "16:9",
+  "ports": "2USB,1HDMI,1VGA",
+  "other": "other"
+}
+
+###
+
+# PUT (update) an existing product
+PUT http://localhost:9090/products/monitors/15
+Content-Type: application/json
+
+{
+  "image": "img2",
+  "stock": 5,
+  "category": "monitor",
+  "price": 100.0,
+  "warranty": 12,
+  "name": "Monitor4",
+  "brand": "Acer",
+  "diagonal": 27.6,
+  "resolution": "1920x1080",
+  "responseTime": 1,
+  "refreshRate": 60,
+  "technology": "tech",
+  "color": "black",
+  "aspectRatio": "16:9",
+  "ports": "2USB,1HDMI,1VGA",
+  "other": "other"
+}
+
+###
+
+# DELETE a product
+DELETE http://localhost:9090/products/monitors/16

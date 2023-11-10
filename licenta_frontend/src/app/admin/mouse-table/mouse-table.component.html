@@ -1,0 +1,244 @@
+<div class="keyboard-container">
+  <div class="search-container" *ngIf="selectedMouse===null && !statsAddMouse">
+    <label class="search-label">Search:</label>
+    <input matInput type="text" [(ngModel)]="filterValue" (input)="applyFilter()" placeholder="Enter ID or Name" class="search-input">
+  </div>
+  <div class="search-container"  *ngIf="selectedMouse===null && !statsAddMouse">
+    <label class="search-label">Add new mouse</label><button class="button-confirm" (click)="toggleAddMouseForm()"><mat-icon>add</mat-icon></button>
+  </div>
+
+  <div class="mat-elevation-z8">
+    <table mat-table *ngIf="selectedMouse===null && !statsAddMouse" [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let mouse">{{ mouse.id }}</td>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td mat-cell *matCellDef="let mouse">{{ mouse.name }}</td>
+      </ng-container>
+      <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Image</th>
+        <td mat-cell *matCellDef="let mouse"><img [src]="mouse.image" alt="Mouse Image" width="100" style="display: block;"></td>
+      </ng-container>
+      <ng-container matColumnDef="stock">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock</th>
+        <td mat-cell *matCellDef="let mouse">{{ mouse.stock }}</td>
+      </ng-container>
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+        <td mat-cell *matCellDef="let mouse">{{ mouse.price }}</td>
+      </ng-container>
+      <ng-container matColumnDef="warranty">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Warranty</th>
+        <td mat-cell *matCellDef="let mouse">{{ mouse.warranty }}</td>
+      </ng-container>
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit</th>
+        <td mat-cell *matCellDef="let mouse">
+          <button mat-icon-button color="primary" (click)="getEditedMouse(mouse)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{filterValue}}"</td>
+      </tr>
+    </table>
+    <mat-paginator *ngIf="selectedMouse===null && !statsAddMouse" style="margin-top: 15px;" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+</div>
+<div class="keyboard-content">
+  <div class="keyboard-edit" *ngIf="selectedMouse!==null">
+    <h3>Edit Mouse</h3>
+    <ng-container *ngIf="selectedMouse">
+      <!-- Edit Form -->
+      <form (ngSubmit)="updateMouse()" #editForm="ngForm">
+        <div>
+          <label class="text-label">ID:</label>
+          <input type="text" name="id" class="input-text" [(ngModel)]="selectedMouse.id" required readonly [disabled]="true">
+        </div>
+        <div>
+          <label class="text-label">Image URL:</label>
+          <input type="text" name="image" class="input-text" [(ngModel)]="selectedMouse.image" required>
+        </div>
+        <div>
+          <label class="text-label">Stock:</label>
+          <input type="number" name="stock" class="input-text" [(ngModel)]="selectedMouse.stock" required>
+        </div>
+        <div>
+          <label class="text-label">Category:</label>
+          <input type="text" name="category" class="input-text" [(ngModel)]="selectedMouse.category" [disabled]="true" required>
+        </div>
+        <div>
+          <label class="text-label">Price:</label>
+          <input type="number" name="price" class="input-text" [(ngModel)]="selectedMouse.price" required>
+        </div>
+        <div>
+          <label class="text-label">Warranty:</label>
+          <input type="number" name="warranty" class="input-text" [(ngModel)]="selectedMouse.warranty" required>
+        </div>
+        <div>
+          <label class="text-label">Name:</label>
+          <input type="text" name="name" class="input-text" [(ngModel)]="selectedMouse.name" required>
+        </div>
+        <div>
+          <label class="text-label">Brand:</label>
+          <input type="text" name="brand" class="input-text" [(ngModel)]="selectedMouse.brand" required>
+        </div>
+        <div>
+          <label class="text-label">Technology:</label>
+          <select name="keyboardTechnology" [(ngModel)]="selectedMouse.technology" [value]="selectedMouse.technology" required>
+            <option value="WIRELESS">WIRELESS</option>
+            <option value="WIRED">WIRED</option>
+            <option value="BOTH">BOTH</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-label">Color:</label>
+          <input type="text" name="color" class="input-text" [(ngModel)]="selectedMouse.color" required>
+        </div>
+        <div>
+          <label class="text-label">Mouse Interface:</label>
+          <select name="keyboardInterface" [(ngModel)]="selectedMouse.mouseInterface" [value]="selectedMouse.mouseInterface" required>
+            <option value="BLUETOOTH">Bluetooth</option>
+            <option value="USB">USB</option>
+            <option value="BOTH">Both</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-label">Sensor Type:</label>
+          <input type="text" name="sensorType" class="input-text" [(ngModel)]="selectedMouse.sensorType" required>
+        </div>
+        <div>
+          <label class="text-label">Number of Buttons:</label>
+          <input type="text" name="numberButtons" class="input-text" [(ngModel)]="selectedMouse.numberButtons" required>
+        </div>
+        <div>
+          <label class="text-label">Maximum Resolution(DPI):</label>
+          <input type="text" name="maximumResolution" class="input-text" [(ngModel)]="selectedMouse.maximumResolution" required>
+        </div>
+        <div>
+          <label class="text-label">Number of Scroll Wheel:</label>
+          <input type="text" name="scrollWheel" class="input-text" [(ngModel)]="selectedMouse.scrollWheel" required>
+        </div>
+        <div>
+          <label class="text-label">Size:</label>
+          <input type="text" name="size" class="input-text" [(ngModel)]="selectedMouse.size" required>
+        </div>
+
+        <div>
+          <label class="text-label">Weight:</label>
+          <input type="number" name="weight" class="input-text" [(ngModel)]="selectedMouse.weight" required>
+        </div>
+        <div>
+          <label class="text-label">Supported Operating Systems:</label>
+          <input type="text" name="soSystems" class="input-text" [(ngModel)]="selectedMouse.supportedOs" required>
+        </div>
+        <div>
+          <label class="text-label">Other:</label>
+          <textarea name="other" [(ngModel)]="selectedMouse.other"></textarea>
+        </div>
+
+        <button type="submit" [disabled]="editForm.invalid">Update</button>
+        <button type="button" (click)="cancelEdit()">Cancel</button>
+      </form>
+    </ng-container>
+  </div>
+</div>
+<div class="keyboard-content">
+  <div class="keyboard-edit" *ngIf="statsAddMouse">
+    <h3>Add Mouse</h3>
+    <ng-container *ngIf="statsAddMouse">
+      <!-- Edit Form -->
+      <form (ngSubmit)="addMouse()" #editForm2="ngForm">
+        <div>
+          <label class="text-label">Image URL:</label>
+          <input type="text" name="image" class="input-text" [(ngModel)]="newMouse.image" required>
+        </div>
+        <div>
+          <label class="text-label">Stock:</label>
+          <input type="number" name="stock" class="input-text" [(ngModel)]="newMouse.stock" required>
+        </div>
+        <div>
+          <label class="text-label">Category:</label>
+          <input type="text" name="category" class="input-text" [(ngModel)]="newMouse.category" [disabled]="true" required>
+        </div>
+        <div>
+          <label class="text-label">Price:</label>
+          <input type="number" name="price" class="input-text" [(ngModel)]="newMouse.price" required>
+        </div>
+        <div>
+          <label class="text-label">Warranty:</label>
+          <input type="number" name="warranty" class="input-text" [(ngModel)]="newMouse.warranty" required>
+        </div>
+        <div>
+          <label class="text-label">Name:</label>
+          <input type="text" name="name" class="input-text" [(ngModel)]="newMouse.name" required>
+        </div>
+        <div>
+          <label class="text-label">Brand:</label>
+          <input type="text" name="brand" class="input-text" [(ngModel)]="newMouse.brand" required>
+        </div>
+        <div>
+          <label class="text-label">Mouse Technology:</label>
+          <select name="keyboardTechnology" [(ngModel)]="newMouse.technology" [value]="newMouse.technology" required>
+            <option value="WIRELESS">WIRELESS</option>
+            <option value="WIRED">WIRED</option>
+            <option value="BOTH">BOTH</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-label">Color:</label>
+          <input type="text" name="color" class="input-text" [(ngModel)]="newMouse.color" required>
+        </div>
+        <div>
+          <label class="text-label">Mouse Interface:</label>
+          <select name="keyboardInterface" [(ngModel)]="newMouse.mouseInterface" [value]="newMouse.mouseInterface" required>
+            <option value="BLUETOOTH">Bluetooth</option>
+            <option value="USB">USB</option>
+            <option value="BOTH">BOTH</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-label">Sensor Type:</label>
+          <input type="text" name="sensorType" class="input-text" [(ngModel)]="newMouse.sensorType" required>
+        </div>
+        <div>
+          <label class="text-label">Number of Buttons:</label>
+          <input type="text" name="numberButtons" class="input-text" [(ngModel)]="newMouse.numberButtons" required>
+        </div>
+        <div>
+          <label class="text-label">Maximum Resolution(DPI):</label>
+          <input type="text" name="maximumResolution" class="input-text" [(ngModel)]="newMouse.maximumResolution" required>
+        </div>
+        <div>
+          <label class="text-label">Number of Scroll Wheel:</label>
+          <input type="text" name="scrollWheel" class="input-text" [(ngModel)]="newMouse.scrollWheel" required>
+        </div>
+        <div>
+          <label class="text-label">Size:</label>
+          <input type="text" name="size" class="input-text" [(ngModel)]="newMouse.size" required>
+        </div>
+
+        <div>
+          <label class="text-label">Weight:</label>
+          <input type="number" name="weight" class="input-text" [(ngModel)]="newMouse.weight" required>
+        </div>
+        <div>
+          <label class="text-label">Supported Operating Systems:</label>
+          <input type="text" name="soSystems" class="input-text" [(ngModel)]="newMouse.supportedOs" required>
+        </div>
+        <div>
+          <label class="text-label">Other:</label>
+          <textarea name="other" [(ngModel)]="newMouse.other"></textarea>
+        </div>
+
+        <button type="submit" [disabled]="editForm2.invalid">Add</button>
+        <button type="button" (click)="toggleAddMouseForm()">Cancel</button>
+      </form>
+    </ng-container>
+  </div>
+</div>
+</div>

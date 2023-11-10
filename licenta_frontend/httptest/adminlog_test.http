@@ -1,0 +1,30 @@
+# GET all products
+GET http://localhost:9090/admins/logs HTTP/1.1
+
+###
+
+# GET a specific product
+GET http://localhost:9090/admins/1/logs HTTP/1.1
+
+###
+
+# POST a new product
+POST http://localhost:9090/admins/logs
+Content-Type: application/json
+
+{
+  "adminLog": "a facut ceva adminul",
+  "category": "motherboard",
+  "idc": 1,
+  "email": "email@gmail.com",
+  "firstname":"gigel",
+  "lastname":"frone",
+  "phoneNumber": "0000000000"
+
+}
+
+###
+
+
+# DELETE a product
+DELETE http://localhost:9090/admins/logs/9

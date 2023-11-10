@@ -1,0 +1,43 @@
+<div class="container2">
+<div class="container">
+<div class="account-settings">
+  <h2>Account  Settings</h2>
+  <!-- <mat-tab-group color="primary" backgroundColor="primary">
+    <mat-tab label="First">Details</mat-tab>
+    <mat-tab label="Second">Security</mat-tab>
+    <mat-tab label="Third">Content 3</mat-tab>
+  </mat-tab-group> -->
+  <form (ngSubmit)="updateAccount()" #accountForm="ngForm">
+    <div class="form-group">
+      <label for="firstname">First Name:</label>
+      <input type="text"  name="fname" [(ngModel)]="fname" required>
+    </div>
+    <div class="form-group">
+      <label for="lastname">Last Name:</label>
+      <input type="text"  name="lname" [(ngModel)]="lname" required>
+    </div>
+    <div class="form-group">
+      <label for="phoneNumber">Phone Number:</label>
+      <input type="tel"  name="phone" [(ngModel)]="phone" required>
+    </div>
+    <label for="firstname" style="padding-bottom: 2vh;">{{messageUpdate}}</label>
+    <button type="submit" [disabled]="accountForm.invalid">Save Settings</button>
+  </form>
+</div>
+<div class="account-settings">
+  <h2>Security Settings</h2>
+  <form (ngSubmit)="updatePassword()" #accountForm2="ngForm">
+    <div class="form-group">
+      <label>New password:</label>
+      <input type="password" [(ngModel)]="newPassword" name="newPassword" required>
+    </div>
+    <div class="form-group">
+      <label>Repeat new password:</label>
+      <input type="password" [(ngModel)]="repeatPassword" name="repeatPassword" required>
+    </div>
+    <label for="firstname" style="padding-bottom: 2vh;">{{passwordMessage}}</label>
+    <button type="submit" [disabled]="accountForm2.invalid">Change passowrd</button>
+  </form>
+</div>
+</div>
+</div>
